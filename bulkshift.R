@@ -5,8 +5,8 @@ bulkshift <-
              shift.method="lm",#the model used for correction: "mean", "lm", "brt"
              mosaic=FALSE,     #mosaic the corrected "shift" layer and the target?
              save.data=FALSE,  #output the bulk shift data?
-             err.plots=FALSE,  #output 2d (from bivariate models) or 3d (from multivariate models) error plots?
-             dist.plots=TRUE,  #output distribution (cdf and pdf) plots for shifted data? 
+             err.plots=TRUE,   #output 2d (from bivariate models) or 3d (from multivariate models) error plots?
+             dist.plots=FALSE, #output distribution (cdf and pdf) plots for shifted data? 
              sample=FALSE,     #use a subsample of the dataset? may be necessary for BRTs or plotting with large datasets
              samp.size=0.25,   #subsample size as a proportion of all overlapping raster cells
              
@@ -129,10 +129,6 @@ bulkshift <-
                         require(plot3D)
                         require(plot3Drgl)
                         
-                        if(sample=="FALSE"){
-                            readline(prompt="3d plotting large datasets can be slow... consider using the 'sample' argument or press [enter] to continue.")
-                        }
-                        
                         #create grids of predictors for plotting the model in 3d
                         grid.lines <- 100
                         x.pred <- seq(min(mod.vars[1]), max(mod.vars[1]), length.out = grid.lines)
@@ -155,7 +151,7 @@ bulkshift <-
                                   xlab="Backscatter (dB)", ylab="Var 1", zlab="Error (dB)", 
                                   theta=45, phi=0, 
                                   clab="Error", 
-                                  cex=0.25, pch=16,
+                                  cex=0.5, pch=16,
                                   col=ramp.col(c('red2', 'lightgoldenrod', 'green4'), alpha=0.25),
                                   ticktype = "detailed", 
                                   plot=FALSE)
@@ -219,10 +215,6 @@ bulkshift <-
                         require(plot3D)
                         require(plot3Drgl)
                         
-                        if(sample=="FALSE"){
-                            readline(prompt="3d plotting large datasets can be slow... consider using the 'sample' argument or press [enter] to continue.")
-                        }
-                        
                         #create grids of predictors for plotting the model in 3d
                         grid.lines <- 100
                         x.pred <- seq(min(mod.vars[1]), max(mod.vars[1]), length.out = grid.lines)
@@ -245,7 +237,7 @@ bulkshift <-
                                   xlab="Backscatter (dB)", ylab="Var 1", zlab="Error (dB)", 
                                   theta=45, phi=0, 
                                   clab="Error", 
-                                  cex=0.25, pch=16,
+                                  cex=0.5, pch=16,
                                   col=ramp.col(c('red2', 'lightgoldenrod', 'green4'), alpha=0.25),
                                   ticktype = "detailed", 
                                   plot=FALSE)
