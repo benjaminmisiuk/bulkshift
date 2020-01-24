@@ -151,7 +151,7 @@ bulkshift <-
                                   xlab="Backscatter (dB)", ylab="Var 1", zlab="Error (dB)", 
                                   theta=45, phi=0, 
                                   clab="Error", 
-                                  cex=0.5, pch=16,
+                                  cex=0.45, pch=16,
                                   col=ramp.col(c('red2', 'lightgoldenrod', 'green4'), alpha=0.25),
                                   ticktype = "detailed", 
                                   plot=FALSE)
@@ -237,7 +237,7 @@ bulkshift <-
                                   xlab="Backscatter (dB)", ylab="Var 1", zlab="Error (dB)", 
                                   theta=45, phi=0, 
                                   clab="Error", 
-                                  cex=0.5, pch=16,
+                                  cex=0.45, pch=16,
                                   col=ramp.col(c('red2', 'lightgoldenrod', 'green4'), alpha=0.25),
                                   ticktype = "detailed", 
                                   plot=FALSE)
