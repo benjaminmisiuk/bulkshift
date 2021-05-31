@@ -1,16 +1,17 @@
 bulkshift <-
-  function(shift,                 #dataset being corrected
-           target,                #reference dataset
-           preds=NULL,            #list of optional explanatory variables
-           shift.method="lm",     #the model used for correction: "mean", "lm", "brt"
-           mosaic=FALSE,          #mosaic the corrected "shift" layer and the target?
-           save.data=FALSE,       #output the bulk shift data?
-           err.plots=FALSE,       #output 2d (from bivariate models) or 3d (from multivariate models) error plots?
-           dist.plots=FALSE,      #output distribution (cdf and pdf) plots for shifted data? 
-           save.dist.plots=FALSE, #if TRUE, save the plots in the list output rather than plotting to the graphics device
-           save.err.plots=FALSE,  #if TRUE, save plots in the list output rather than plotting to the graphics device
-           sample=FALSE,          #use a subsample of the dataset? may be necessary for BRTs or plotting with large datasets
-           samp.size=0.25,        #subsample size as a proportion of all overlapping raster cells
+  function(shift,                   #dataset being corrected
+           target,                  #reference dataset
+           preds=NULL,              #list of optional explanatory variables
+           shift.method="lm",       #the model used for correction: "mean", "lm", "brt"
+           mosaic=FALSE,            #mosaic the corrected "shift" layer and the target?
+           mosaic.method="bilinear",#how should the shift layerr be resampled for mosaicking? "bilinear" (bilinear interpolation), or "ngb"
+           save.data=FALSE,         #output the bulk shift data?
+           err.plots=FALSE,         #output 2d (from bivariate models) or 3d (from multivariate models) error plots?
+           dist.plots=FALSE,        #output distribution (cdf and pdf) plots for shifted data? 
+           save.dist.plots=FALSE,   #if TRUE, save the plots in the list output rather than plotting to the graphics device
+           save.err.plots=FALSE,    #if TRUE, save plots in the list output rather than plotting to the graphics device
+           sample=FALSE,            #use a subsample of the dataset? may be necessary for BRTs or plotting with large datasets
+           samp.size=0.25,          #subsample size as a proportion of all overlapping raster cells
            
            #arguments passed to glm() when shift.method="lm"
            family=gaussian,  #error distribution
@@ -538,8 +539,8 @@ bulkshift <-
     #collate and return the results of the bulk shift
     if(save.data == TRUE){
       if(mosaic == TRUE){
-        cat("Creating harmonized mosaic... \n")
-        shifted.ext.re <- resample(shifted, extend(target, shifted), method="ngb")
+        cat("Creating harmonized mosaic using", mosaic.method, "interpolation... \n")
+        shifted.ext.re <- resample(shifted, extend(target, shifted), method=mosaic.method)
         mosaic <- mosaic(shifted.ext.re, target, fun=mean)
         
         result <- list(shifted=shifted, mosaic=mosaic, model=error.model, fit_stats=fit.stats, data=back_data)
@@ -550,8 +551,8 @@ bulkshift <-
     } else {
       
       if(mosaic == TRUE){
-        cat("Creating harmonized mosaic... \n")
-        shifted.ext.re <- resample(shifted, extend(target, shifted), method="ngb")
+        cat("Creating harmonized mosaic using", mosaic.method, "interpolation... \n")
+        shifted.ext.re <- resample(shifted, extend(target, shifted), method=mosaic.method)
         mosaic <- mosaic(shifted.ext.re, target, fun=mean)
         
         result <- list(shifted=shifted, mosaic=mosaic, model=error.model, fit_stats=fit.stats)
