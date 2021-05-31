@@ -4,7 +4,7 @@ bulkshift <-
            preds=NULL,              #list of optional explanatory variables
            shift.method="lm",       #the model used for correction: "mean", "lm", "brt"
            mosaic=FALSE,            #mosaic the corrected "shift" layer and the target?
-           mosaic.method="bilinear",#how should the shift layerr be resampled for mosaicking? "bilinear" (bilinear interpolation), or "ngb"
+           mosaic.method="bilinear",#how should the shift layer be resampled for mosaicking? "bilinear" (bilinear interpolation), or "ngb" (nearest neighbor)
            save.data=FALSE,         #output the bulk shift data?
            err.plots=FALSE,         #output 2d (from bivariate models) or 3d (from multivariate models) error plots?
            dist.plots=FALSE,        #output distribution (cdf and pdf) plots for shifted data? 
