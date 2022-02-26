@@ -1,0 +1,12 @@
+Package: bulkshift
+Title: Relative Backscatter Calibration using the Bulk Shift Method
+Version: 0.0.0.9000
+Authors@R: 
+    person("Benjamin", "Misiuk", , "benjaminmisiuk@gmail.com", role = c("aut", "cre"))
+Description: Pending.
+License: `use_mit_license()`
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2.9000
+Imports: terra
+Suggests: randomForest
