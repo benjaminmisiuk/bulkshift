@@ -51,7 +51,7 @@ plot(b$shifted)
 ```
 ![](images/bshift_eg2.png)
 
-The bathymetry layer can be added as a covariate in the model, and we can create a mosaic of the backscatter layers. All additional covariates must be included as layers in a single SpatRaster and passed to the `preds` arggument:
+The bathymetry layer can be added as a covariate in the model, and we can create a mosaic of the backscatter layers. All additional covariates must be included as layers in a single SpatRaster and passed to the `preds` argument:
 ```
 bshift <- bulkshift(shift = bb2017, target = bb2016, preds = bbdepth, mosaic = TRUE)
 plot(b$mosaic, col = gray.colors(100))
