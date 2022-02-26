@@ -34,11 +34,8 @@ bulkshift <- function(shift, target, preds = NULL, model = "glm", mosaic = FALSE
   
   #separate the package into exploratory and modelling
   #strat still not working
-  #two step model?
   #gam
   #penalized regression
-  #move stratification to helper function?
-  #weight stratification by autocorrelation?
   #spatial blocking?
   #pre and post stats? ks?
   #test using 1 RasterLayer, 1 SpatRaster, 1 RasterStack, all RasterLayer, 1 RasterStack other RasterLayer
