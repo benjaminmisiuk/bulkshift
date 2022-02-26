@@ -8,9 +8,12 @@ raScale <- function(r, min = 0.1, max = 0.9){
 }
 
 #' Advanced subsampling of a SpatRaster for spatial modelling
+#' 
 #' @param x SpatRaster layer
 #' @param size sample size
 #' @param method vector of subsampling methods
+#' 
+#' #' @import terra
 #' #' @export
 
 bSample <- function(x, size, samplemethods = c('uniform'), ...){

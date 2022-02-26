@@ -1,8 +1,4 @@
-#' Helper functions to calculate model evaluation statistics
-#'
-#' @param y vector of observed values
-#' @param y_hat vector of predicted values
-
+#Functions to calculate model evaluation statistics
 ve <- function(y, y_hat){
   1 - (sum((y - y_hat)^2) / sum((y - mean(y))^2))
 }
@@ -11,6 +7,25 @@ mae <- function(y, y_hat){
   mean(abs(y - y_hat))
 }
 
+#' Sonar backscatter bulk shift
+#' 
+#' Relative calibration of two partially overlapping sonar backscatter datasets using the methods presented in Misiuk et al. (2020). This is largely a wrapper for the [terra] package to facilitate relative calibration of backscatter rasters. Supports several modelling methods and optionally, spatially explicit subsampling and validation.
+#' 
+#' @param shift SpatRaster. Backscatter dataset undergoing correction.
+#' @param target SpatRaster. Backscatter dataset used as reference.
+#' @param preds SpatRaster. One or more layers to use as additional predictor variables for backscatter calibration model.
+#' @param model character. Method used to model error between backscatter datasets. Currently supported models are "mean" (i.e., intercept-only), "glm", and "randomForest". Model defaults are retained; use "..." to specify additional parameters.
+#' @param mosaic logical. Mosaic and output the backscatter layers?
+#' @param mosaicmethod character. Which method used to resample the corrected backscatter layer for mosaicking? See [terra::resample()] for details.
+#' @param savedata logical. Whether to output the model data.frame.
+#' @param sample numeric. Proportion of overlapping data to sample for modelling using [samplemethods.]
+#' @param samplemethods character vector. The method used to subsample the data. One or several of "uniform" (the default), "stratify", or "autocorrelation". Specifying multiple methods results in a combined output. See [Details].
+#' @param crossvalidate numeric. Proportion of data to use for validation. Validation data are drawn from the dataset following saubsampling if [sample] is used.
+#' @param ... Additional parameters to pass to models or subsampling methods.
+#' 
+#' @references 
+#' Misiuk, B., Brown, C.J., Robert, K., Lacharite, M., 2020. Harmonizing Multi-Source Sonar Backscatter Datasets for Seabed Mapping Using Bulk Shift Approaches. Remote Sensing 12, 601. https://doi.org/10.3390/rs12040601
+#' 
 #' @import terra
 #' @importFrom raster raster
 #' @export
