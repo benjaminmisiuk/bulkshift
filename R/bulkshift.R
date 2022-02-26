@@ -15,10 +15,10 @@ mae <- function(y, y_hat){
 #' @importFrom raster raster
 #' @export
 
-bulkshift <- function(shift, target, preds = NULL, model = "glm", mosaic = FALSE, mosaicMethod = "bilinear", saveData = TRUE, sample = NULL, stratify = FALSE, cross_validate = NULL, ...){
+bulkshift <- function(shift, target, preds = NULL, model = "glm", mosaic = FALSE, mosaicmethod = "bilinear", savedata = TRUE, sample = NULL, samplemethods = "uniform", crossvalidate = NULL, ...){
   
   #separate the package into exploratory and modelling
-  #test if stratification is working
+  #strat still not working
   #two step model?
   #gam
   #penalized regression
@@ -27,6 +27,7 @@ bulkshift <- function(shift, target, preds = NULL, model = "glm", mosaic = FALSE
   #spatial blocking?
   #pre and post stats? ks?
   #test using 1 RasterLayer, 1 SpatRaster, 1 RasterStack, all RasterLayer, 1 RasterStack other RasterLayer
+  #spatial subsample
   
   #check for supported models
   if(!model %in% c('mean', 'glm', 'randomForest')) stop('model must be one of "mean", "glm", or "randomForest"')
@@ -76,7 +77,7 @@ bulkshift <- function(shift, target, preds = NULL, model = "glm", mosaic = FALSE
     preds <- shift
   }
   
-  #mask rasters at the area of overlap 
+  #mask SpatRasters at the area of overlap 
   ovlp <- rast(
     list(
       err_ras,
@@ -84,41 +85,21 @@ bulkshift <- function(shift, target, preds = NULL, model = "glm", mosaic = FALSE
     )
   )
   
-  #a function would take ovlp as input and return a df that has been subsampled
-  #extract values at the area of overlap
+  #extract values at the area of overlap, using subsampling if specified
   if(!is.null(sample)){
     sample <- floor(length(cells(ovlp$error)) * sample)
-    
-    if(stratify){
-      sample <- round(sample/4)
-      q <- terra::global(ovlp[[2]], fun=quantile, na.rm = TRUE)
-      
-      mat <- matrix(
-        c(
-          q[[1]], q[[2]], 1,
-          q[[2]], q[[3]], 2,
-          q[[3]], q[[4]], 3,
-          q[[4]], q[[5]], 4
-        ),
-        ncol = 3,
-        byrow = TRUE
-      )
-      
-      strat <- terra::classify(ovlp[[2]], rcl = mat, include.lowest = TRUE); names(strat) <- 'strata'
-      s <- spatSample(strat, size = sample, method = 'stratified')
-      df <- ovlp[s$cell]
-      rm(strat)
-    } else {
-      df <- spatSample(ovlp, sample, as.df = TRUE, na.rm = TRUE)
-    } else {
+    s <- bSample(ovlp[[2]], size = sample, samplemethods = samplemethods)
+    df <- ovlp[s]
+  } else {
     df <- as.data.frame(ovlp)
   }
-
+  
   df <- df[complete.cases(df), ]
   rm(ovlp, err_ras)
   
-  if(!is.null(cross_validate)){
-    cv_i <- sample(c(TRUE, FALSE), nrow(df), prob = c(cross_validate, 1-cross_validate), replace = TRUE)
+  #set aside validation data if "crossvalidate" is specified
+  if(!is.null(crossvalidate)){
+    cv_i <- sample(c(TRUE, FALSE), nrow(df), prob = c(crossvalidate, 1-crossvalidate), replace = TRUE)
     df_out <- df[cv_i, ]
     df <- df[!cv_i, ]
   }
@@ -140,7 +121,7 @@ bulkshift <- function(shift, target, preds = NULL, model = "glm", mosaic = FALSE
   err_pred <- predict(preds, err_mod, type = 'response')
   shifted <- shift + err_pred; names(shifted) <- paste0(names(shift), '_shifted')
   
-  #calculate initial and fitted model statistics
+  #calculate fitted model statistics
   p <- predict(err_mod, df, type = 'response')
   fitStats <- data.frame(
     VE = ve(y = df$error + df$bb2017, y_hat = p + df$bb2017),
@@ -148,13 +129,12 @@ bulkshift <- function(shift, target, preds = NULL, model = "glm", mosaic = FALSE
     r = cor(df$error + df$bb2017, p + df$bb2017)
   )
   
-  #prepare the output
-  
+  #prepare output
   #if all of the original inputs were from the "raster" package, export class "RasterLayer"; otherwise, SpatRaster
   if(isRasterLayer){
     out <- list(
       shifted = raster(shifted),
-      error_Model = err_mod,
+      errorModel = err_mod,
       fitStats = fitStats
     )
   } else {
@@ -165,8 +145,8 @@ bulkshift <- function(shift, target, preds = NULL, model = "glm", mosaic = FALSE
     )
   }
   
-  #validate using witheld data if specified by "cross_validate"
-  if(!is.null(cross_validate)){
+  #validate using witheld data if specified by "crossvalidate"
+  if(!is.null(crossvalidate)){
     p <- predict(err_mod, df_out, type = 'response')
     
     testStats <- data.frame(
@@ -177,13 +157,13 @@ bulkshift <- function(shift, target, preds = NULL, model = "glm", mosaic = FALSE
     out <- c(out, list(testStats = testStats))
   }
   
-  if(saveData) out <- c(out, list(data=df))
+  if(savedata) out <- c(out, list(data=df))
 
   if(mosaic){
     if(ext(shift) != ext(target) | res(shift)[1] != res(target)[1] | res(shift)[2] != res(target)[2]){ #if the original "target" and "shift" did not align, choose to resample the "shifted" with respect to the original "target"
       target <- extend(target, shifted)
       bs_mosaic <- terra::mosaic(
-        resample(shifted, target, method = mosaicMethod),
+        resample(shifted, target, method = mosaicmethod),
         target
       )
       names(bs_mosaic) <- paste0(names(target), '_', names(shift), '_m')
