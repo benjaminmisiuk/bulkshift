@@ -27,7 +27,13 @@ datasets collected during two different surveys, and also a depth raster.
 bb2016 <- rast(system.file('extdata', 'bb2016.tif', package='bulkshift'))
 bb2017 <- rast(system.file('extdata', 'bb2017.tif', package='bulkshift'))
 bbdepth <- rast(system.file('extdata', 'bbdepth.tif', package='bulkshift'))
+
+par(mfrow=c(2,1))
+plot(bb2016, col = gray.colors(100))
+plot(bb2017, col = gray.colors(100))
 ```
+![](images/bshift_eg1.png)
+
 At its most basic, the bulk shift performs relative calibration using mutual overlap between surveys:
 ```
 b <- bulkshift(shift = bb2017, target = bb2016)
@@ -37,12 +43,19 @@ any other model in R:
 ```
 b$errorModel
 ```
-We can also plot the corrected backscatter layer, and compare it to the dataset from 2016:
+We can see that the model is a GLM, and the corrected backscatter layer can be plotted:
 ```
+#reset the graphics device
+dev.off()
 plot(b$shifted)
-plot(bb2016, add = TRUE)
 ```
-![](images/bshift_eg1.png)
+![](images/bshift_eg2.png)
 
+The bathymetry layer can be added as a covariate in the model, and we can create a mosaic of the backscatter layers. All additional covariates must be included as layers in a single SpatRaster and passed to the `preds` arggument:
+```
+bshift <- bulkshift(shift = bb2017, target = bb2016, preds = bbdepth, mosaic = TRUE)
+plot(b$mosaic, col = gray.colors(100))
+```
+![](images/bshift_eg3.png)
 # References
 Misiuk, B., Brown, C.J., Robert, K., Lacharite, M., 2020. Harmonizing Multi-Source Sonar Backscatter Datasets for Seabed Mapping Using Bulk Shift Approaches. Remote Sensing 12, 601. https://doi.org/10.3390/rs12040601
