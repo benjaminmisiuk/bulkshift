@@ -42,6 +42,7 @@ We can also plot the corrected backscatter layer, and compare it to the dataset 
 plot(b$shifted)
 plot(bb2016, add = TRUE)
 ```
+![](images/bshift_eg1.png)
 
 # References
 Misiuk, B., Brown, C.J., Robert, K., Lacharite, M., 2020. Harmonizing Multi-Source Sonar Backscatter Datasets for Seabed Mapping Using Bulk Shift Approaches. Remote Sensing 12, 601. https://doi.org/10.3390/rs12040601
