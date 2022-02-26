@@ -27,10 +27,10 @@ datasets collected during two different surveys, and also a depth raster.
 bb2016 <- rast(system.file('extdata', 'bb2016.tif', package='bulkshift'))
 bb2017 <- rast(system.file('extdata', 'bb2017.tif', package='bulkshift'))
 bbdepth <- rast(system.file('extdata', 'bbdepth.tif', package='bulkshift'))
-
-par(mfrow=c(2,1))
-plot(bb2016, col = gray.colors(100))
-plot(bb2017, col = gray.colors(100))
+```
+These datasets are not calibrated, and mosaicking them as-is produces obvious artefacts where the values do not match between surveys:
+```
+plot(mosaic(bb2016, bb2017), col = gray.colors(100))
 ```
 ![](images/bshift_eg1.png)
 
@@ -45,8 +45,6 @@ b$errorModel
 ```
 We can see that the model is a GLM, and the corrected backscatter layer can be plotted:
 ```
-#reset the graphics device
-dev.off()
 plot(b$shifted)
 ```
 ![](images/bshift_eg2.png)
@@ -57,5 +55,6 @@ bshift <- bulkshift(shift = bb2017, target = bb2016, preds = bbdepth, mosaic = T
 plot(b$mosaic, col = gray.colors(100))
 ```
 ![](images/bshift_eg3.png)
+
 # References
 Misiuk, B., Brown, C.J., Robert, K., Lacharite, M., 2020. Harmonizing Multi-Source Sonar Backscatter Datasets for Seabed Mapping Using Bulk Shift Approaches. Remote Sensing 12, 601. https://doi.org/10.3390/rs12040601
