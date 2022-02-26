@@ -1,7 +1,7 @@
 # bulkshift
 ### Bulk shift backscatter harmonization for seabed mapping in R
 
-This package facilitates relative calibration for processed sonar backscatter raster datasets using the methods presented in Misiuk et al. (2020). 
+This package facilitates relative calibration for processed sonar backscatter raster datasets using the methods described in Misiuk et al. (2020). 
 It also extends these methods by providing functionality for advanced subsampling to handle dataset imbalance and spatial autocorrelation, and support for additional modelling methods. 
 
 The functions in this package rely heavily on the [terra](https://github.com/rspatial/terra) package. RasterLayers are still supported, but the use of terra is highly 
