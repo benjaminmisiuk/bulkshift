@@ -1,4 +1,4 @@
-#' @param r SpatRaster
+#function for rescale SpatRaster layers
 
 raScale <- function(r, min = 0.1, max = 0.9){
   rmin <- as.numeric(global(r, fun='min', na.rm = TRUE))

@@ -37,9 +37,13 @@ bulkshift <- function(shift, target, preds = NULL, model = "glm", mosaic = FALSE
   #gam
   #penalized regression
   #spatial blocking?
-  #pre and post stats? ks?
   #test using 1 RasterLayer, 1 SpatRaster, 1 RasterStack, all RasterLayer, 1 RasterStack other RasterLayer
   #spatial subsample
+  #'details'
+  #doi
+  #bSample docs
+  #examples
+  #figure out ellipses with bSample
   
   #check for supported models
   if(!model %in% c('mean', 'glm', 'randomForest')) stop('model must be one of "mean", "glm", or "randomForest"')
@@ -68,6 +72,9 @@ bulkshift <- function(shift, target, preds = NULL, model = "glm", mosaic = FALSE
   } else {
     target_re <- target
   }
+  
+  names(target) <- "target"
+  names(shift) <- "shift"
   
   #calculate the error between surveys
   err_ras <- (target_re - shift); names(err_ras) <- 'error'
@@ -111,7 +118,8 @@ bulkshift <- function(shift, target, preds = NULL, model = "glm", mosaic = FALSE
   
   #set aside validation data if "crossvalidate" is specified
   if(!is.null(crossvalidate)){
-    cv_i <- sample(c(TRUE, FALSE), nrow(df), prob = c(crossvalidate, 1-crossvalidate), replace = TRUE)
+    cv_i <- rep(FALSE, nrow(df)); cv_i[1:round(crossvalidate*nrow(df))] <- TRUE
+    cv_i <- sample(cv_i)
     df_out <- df[cv_i, ]
     df <- df[!cv_i, ]
   }
@@ -133,12 +141,22 @@ bulkshift <- function(shift, target, preds = NULL, model = "glm", mosaic = FALSE
   err_pred <- predict(preds, err_mod, type = 'response')
   shifted <- shift + err_pred; names(shifted) <- paste0(names(shift), '_shifted')
   
-  #calculate fitted model statistics
-  p <- predict(err_mod, df, type = 'response')
+  #calculate fitted model statistics before and after correction
   fitStats <- data.frame(
-    VE = ve(y = df$error + df$bb2017, y_hat = p + df$bb2017),
-    MAE = mae(y = df$error + df$bb2017, y_hat = p + df$bb2017),
-    r = cor(df$error + df$bb2017, p + df$bb2017)
+    layer = "Original",
+    VE = ve(y = df$error + df$shift, y_hat = df$shift),
+    MAE = mae(y = df$error + df$shift, y_hat = df$shift),
+    r = cor(df$error + df$shift, df$shift)
+  )
+  p <- predict(err_mod, df, type = 'response')
+  fitStats <- rbind(
+    fitStats,
+    data.frame(
+      layer = "Corrected",
+      VE = ve(y = df$error + df$shift, y_hat = p + df$shift),
+      MAE = mae(y = df$error + df$shift, y_hat = p + df$shift),
+      r = cor(df$error + df$shift, p + df$shift)
+    )
   )
   
   #prepare output
@@ -159,12 +177,21 @@ bulkshift <- function(shift, target, preds = NULL, model = "glm", mosaic = FALSE
   
   #validate using witheld data if specified by "crossvalidate"
   if(!is.null(crossvalidate)){
-    p <- predict(err_mod, df_out, type = 'response')
-    
     testStats <- data.frame(
-      VE = ve(y = df_out$error + df_out$bb2017, y_hat = p + df_out$bb2017),
-      MAE = mae(y = df_out$error + df_out$bb2017, y_hat = p + df_out$bb2017),
-      r = cor(df_out$error + df_out$bb2017, p + df_out$bb2017)
+      layer = "Original",
+      VE = ve(y = df_out$error + df_out$shift, y_hat = df_out$shift),
+      MAE = mae(y = df_out$error + df_out$shift, y_hat = df_out$shift),
+      r = cor(df_out$error + df_out$shift, df_out$shift)
+    )
+    p <- predict(err_mod, df_out, type = 'response')
+    testStats <- rbind(
+      testStats,
+      data.frame(
+        layer = "Corrected",
+        VE = ve(y = df_out$error + df_out$shift, y_hat = p + df_out$shift),
+        MAE = mae(y = df_out$error + df_out$shift, y_hat = p + df_out$shift),
+        r = cor(df_out$error + df_out$shift, p + df_out$shift)
+      )
     )
     out <- c(out, list(testStats = testStats))
   }
