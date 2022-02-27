@@ -51,10 +51,18 @@ plot(b$shifted)
 
 The bathymetry layer can be added as a covariate in the model, and we can create a mosaic of the backscatter layers. All additional covariates must be included as layers in a single SpatRaster and passed to the `preds` argument:
 ```
-bshift <- bulkshift(shift = bb2017, target = bb2016, preds = bbdepth, mosaic = TRUE)
+b <- bulkshift(shift = bb2017, target = bb2016, preds = bbdepth, mosaic = TRUE)
 plot(b$mosaic, col = gray.colors(100))
 ```
 ![](images/bshift_eg3.png)
+
+We can then observe statistics such as the variance explained (VE), mean absolute error (MAE), and correlation between the datasets before and after correction. If a proportion of data were set aside for validation using the `crossvalidate` argument, test statistics will additionally be returned.
+```
+b$fitStats
+#     layer         VE      MAE         r
+#1  Original -2.1262196 7.469381 0.8151604
+#2 Corrected  0.8556397 1.268409 0.9250079
+```
 
 # References
 Misiuk, B., Brown, C.J., Robert, K., Lacharite, M., 2020. Harmonizing Multi-Source Sonar Backscatter Datasets for Seabed Mapping Using Bulk Shift Approaches. Remote Sensing 12, 601. https://doi.org/10.3390/rs12040601
