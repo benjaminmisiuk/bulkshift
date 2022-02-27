@@ -56,7 +56,7 @@ plot(b$mosaic, col = gray.colors(100))
 ```
 ![](images/bshift_eg3.png)
 
-We can then observe statistics such as the variance explained (VE), mean absolute error (MAE), and correlation between the datasets before and after correction. If a proportion of data were set aside for validation using the `crossvalidate` argument, test statistics will additionally be returned. The model data are also returned by default, and relationships between backscatter datasets before and after correction can be compared.
+We can then observe statistics such as the variance explained (VE), mean absolute error (MAE), and Pearson correlation between the datasets before and after correction. If a proportion of data were set aside for validation using the `crossvalidate` argument, test statistics will additionally be returned. The model data are also returned by default, and relationships between backscatter datasets before and after correction can be compared. These data can additionally be used to calculate your own bespoke validation statistics, or to apply modelling methods that are not implemented in the package.
 ```
 b$fitStats
 #     layer         VE      MAE         r
