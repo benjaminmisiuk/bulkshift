@@ -56,13 +56,18 @@ plot(b$mosaic, col = gray.colors(100))
 ```
 ![](images/bshift_eg3.png)
 
-We can then observe statistics such as the variance explained (VE), mean absolute error (MAE), and correlation between the datasets before and after correction. If a proportion of data were set aside for validation using the `crossvalidate` argument, test statistics will additionally be returned.
+We can then observe statistics such as the variance explained (VE), mean absolute error (MAE), and correlation between the datasets before and after correction. If a proportion of data were set aside for validation using the `crossvalidate` argument, test statistics will additionally be returned. The model data are also returned by default, and relationships between backscatter datasets before and after correction can be compared.
 ```
 b$fitStats
 #     layer         VE      MAE         r
 #1  Original -2.1262196 7.469381 0.8151604
 #2 Corrected  0.8556397 1.268409 0.9250079
+
+par(mfrow = c(1,2))
+plot(b$data$target, b$data$shift)
+plot(b$data$target, b$data$shifted)
 ```
+![](images/bshift_eg4.png)
 
 # References
 Misiuk, B., Brown, C.J., Robert, K., Lacharite, M., 2020. Harmonizing Multi-Source Sonar Backscatter Datasets for Seabed Mapping Using Bulk Shift Approaches. Remote Sensing 12, 601. https://doi.org/10.3390/rs12040601
