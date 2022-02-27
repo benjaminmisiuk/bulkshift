@@ -38,12 +38,21 @@ At its most basic, the bulk shift performs relative calibration using mutual ove
 ```
 b <- bulkshift(shift = bb2017, target = bb2016)
 ```
-The result is a list with several important objects. We can inspect the model that was used to calibrate bb2017 just like
-any other model in R:
+The result is a list with several objects, which may differ depending on the function arguments (e.g., `mosaic`, `savedata`, `crossvalidate`). We can inspect the model that was used to calibrate bb2017 just like any other model in R:
 ```
 b$errorModel
+
+#Call:  glm(formula = form, data = df)
+#
+#Coefficients:
+#(Intercept)        shift  
+#     3.7043      -0.2301  
+#
+#Degrees of Freedom: 16419 Total (i.e. Null);  16418 Residual
+#Null Deviance:	    132200 
+#Residual Deviance: 112300 	AIC: 78180
 ```
-We can see that the model is a GLM, and the corrected backscatter layer can be plotted:
+We can see that the model is a GLM. Recall that the response variable is the error between datasets, therefore, the coefficient for "shift" describes the change in error per unit of the "shift" backscatter dataset. The corrected backscatter layer can be plotted:
 ```
 plot(b$shifted)
 ```
