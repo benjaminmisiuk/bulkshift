@@ -183,20 +183,34 @@ bulkshift <- function(shift, target, preds = NULL, model = "glm", mosaic = FALSE
       MAE = mae(y = df_out$error + df_out$shift, y_hat = df_out$shift),
       r = cor(df_out$error + df_out$shift, df_out$shift)
     )
-    p <- predict(err_mod, df_out, type = 'response')
+    p_out <- predict(err_mod, df_out, type = 'response')
     testStats <- rbind(
       testStats,
       data.frame(
         layer = "Corrected",
-        VE = ve(y = df_out$error + df_out$shift, y_hat = p + df_out$shift),
-        MAE = mae(y = df_out$error + df_out$shift, y_hat = p + df_out$shift),
-        r = cor(df_out$error + df_out$shift, p + df_out$shift)
+        VE = ve(y = df_out$error + df_out$shift, y_hat = p_out + df_out$shift),
+        MAE = mae(y = df_out$error + df_out$shift, y_hat = p_out + df_out$shift),
+        r = cor(df_out$error + df_out$shift, p_out + df_out$shift)
       )
     )
     out <- c(out, list(testStats = testStats))
   }
   
-  if(savedata) out <- c(out, list(data=df))
+  if(savedata){
+    out <- c(
+      out, 
+      list(data = data.frame(target = df$shift + df$error, df, shifted = df$shift + p))
+    )
+    
+    if(!is.null(crossvalidate)){
+      out <- c(
+        out, 
+        list(
+          dataVal = data.frame(target = df_out$shift + df_out$error, df_out, shifted = df_out$shift + p_out)
+        )
+      )
+    }
+  }
 
   if(mosaic){
     if(ext(shift) != ext(target) | res(shift)[1] != res(target)[1] | res(shift)[2] != res(target)[2]){ #if the original "target" and "shift" did not align, choose to resample the "shifted" with respect to the original "target"
