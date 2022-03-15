@@ -1,4 +1,4 @@
-#function for rescale SpatRaster layers
+#function for rescaling SpatRaster layers
 
 raScale <- function(r, min = 0.1, max = 0.9){
   rmin <- as.numeric(global(r, fun='min', na.rm = TRUE))
@@ -7,14 +7,33 @@ raScale <- function(r, min = 0.1, max = 0.9){
   r <- min + ((r - rmin)*(max-min)) / (rmax - rmin)
 }
 
+#function to draw random non-NA cell numbers from a single SpatRaster layer
+
+rSample <- function(x, n, prob = FALSE){
+  
+  if(prob){
+    p <- as.vector(x)
+    p <- p[!is.na(p)]
+    s <- which(!is.na(values(x)))
+    
+    out <- sample(s, size = n, prob = p)
+  } else {
+    s <- which(!is.na(values(x)))
+    out <- sample(s, size = n)
+  }
+  return(out)
+}
+
 #' Advanced subsampling of a SpatRaster for spatial modelling
 #' 
 #' @param x SpatRaster layer
 #' @param size sample size
 #' @param method vector of subsampling methods
 #' 
-#' #' @import terra
-#' #' @export
+#' @return Vector of cell numbers
+#' 
+#' @import terra
+#' @export
 
 bSample <- function(x, size, samplemethods = c('uniform'), ...){
   
@@ -50,16 +69,14 @@ bSample <- function(x, size, samplemethods = c('uniform'), ...){
   }
   
   if('autocorrelation' %in% samplemethods){
-    xstrat <- lapply(xstrat, FUN = function(r) autocor(r, global = FALSE, ...))
+    xstrat <- lapply(xstrat, FUN = function(r) autocor(r, global = FALSE))
     xstrat <- lapply(xstrat, FUN = function(r) 1 - raScale(r))
     
-    s <- lapply(xstrat, FUN = function(r) spatSample(r, size = size, method = 'weights', values = FALSE, cells = TRUE))
-    s <- do.call(rbind, s)
-    
-    s <- s$cell
+    s <- lapply(xstrat, FUN = function(r) rSample(r, n = size, prob = TRUE))
+    s <- do.call(c, s)
   } else {
-    s <- lapply(xstrat, FUN = function(r) spatSample(r, size = size, na.rm = TRUE, values = FALSE, cells = TRUE))
-    s <- do.call(rbind, s)
+    s <- lapply(xstrat, FUN = function(r) rSample(r, n = size))
+    s <- do.call(c, s)
   }
   
   return(as.vector(s))

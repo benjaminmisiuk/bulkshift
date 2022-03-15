@@ -33,7 +33,7 @@ mae <- function(y, y_hat){
 bulkshift <- function(shift, target, preds = NULL, model = "glm", mosaic = FALSE, mosaicmethod = "bilinear", savedata = TRUE, sample = NULL, samplemethods = "uniform", crossvalidate = NULL, ...){
   
   #separate the package into exploratory and modelling
-  #strat still not working
+  #the sample index?
   #gam
   #penalized regression
   #spatial blocking?
@@ -58,63 +58,37 @@ bulkshift <- function(shift, target, preds = NULL, model = "glm", mosaic = FALSE
   
   if(class(shift)[1] != 'SpatRaster' | class(target)[1] != 'SpatRaster') stop('all inputs must be rasters.')
   if(class(preds)[1] != 'SpatRaster' & !is.null(preds)) stop('predictors must be rasters.')
-
-  #check for crs matches
-  if(crs(shift) != crs(target)) stop('crs of shift and target layers do not match.')
-
-  if(!is.null(preds)){
-    if(crs(preds) != crs(shift)) stop('crs of preds does not match the shift layer.')
-  }
   
-  #resample the target if necessary
-  if(ext(shift) != ext(target) | res(shift)[1] != res(target)[1] | res(shift)[2] != res(target)[2]){
-    target_re <- resample(target, shift)
-  } else {
-    target_re <- target
-  }
-  
-  names(target) <- "target"
-  names(shift) <- "shift"
-  
-  #calculate the error between surveys
-  err_ras <- (target_re - shift); names(err_ras) <- 'error'
+  #calculate error and get all SpatRasters masked at the overlap
+  ovlp <- overlap(shift, target); names(ovlp) <- c("shift", "target")
+  err_ras <- ovlp$target - ovlp$shift; names(err_ras) <- 'error'
   
   if(is.na(minmax(err_ras)[1]) & is.na(minmax(err_ras)[2])) stop('no overlap detected.')
-    
-  #create a SpatRaster of predictors
+  
   if(!is.null(preds)){
-    if(ext(preds) != ext(shift) | res(preds)[1] != res(shift)[1] | res(preds)[2] != res(shift)[2]){
-      preds <- resample(preds, shift)
-    }
-    preds <- rast(
-      list(
-        shift,
-        preds
-      )
-    )
+    ovlp_p <- overlap(shift, preds); names(ovlp_p[[1]]) <- "shift"
   } else {
-    preds <- shift
+    ovlp_p <- shift; names(ovlp_p) <- "shift"
   }
   
-  #mask SpatRasters at the area of overlap 
   ovlp <- rast(
     list(
       err_ras,
-      mask(preds, err_ras)
+      mask(ovlp_p, err_ras)
     )
   )
-  
+    
   #extract values at the area of overlap, using subsampling if specified
   if(!is.null(sample)){
     sample <- floor(length(cells(ovlp$error)) * sample)
-    s <- bSample(ovlp[[2]], size = sample, samplemethods = samplemethods)
+    s <- bSample(ovlp$shift, size = sample, samplemethods = samplemethods)
     df <- ovlp[s]
   } else {
     df <- as.data.frame(ovlp)
   }
   
   df <- df[complete.cases(df), ]
-  rm(ovlp, err_ras)
+  rm(ovlp)
   
   #set aside validation data if "crossvalidate" is specified
   if(!is.null(crossvalidate)){
@@ -127,7 +101,7 @@ bulkshift <- function(shift, target, preds = NULL, model = "glm", mosaic = FALSE
   #model the error
   form <- as.formula(
     paste0(
-      names(df)[1], 
+      'error', 
       '~',
       paste0(names(df)[-1], collapse="+")
     )
@@ -138,7 +112,7 @@ bulkshift <- function(shift, target, preds = NULL, model = "glm", mosaic = FALSE
   if(model == 'randomForest') err_mod <- randomForest::randomForest(form, data = df, ...)
   
   #use the model to predict the error over the 'shift' dataset
-  err_pred <- predict(preds, err_mod, type = 'response')
+  err_pred <- predict(ovlp_p, err_mod, type = 'response')
   shifted <- shift + err_pred; names(shifted) <- paste0(names(shift), '_shifted')
   
   #calculate fitted model statistics before and after correction
@@ -160,7 +134,8 @@ bulkshift <- function(shift, target, preds = NULL, model = "glm", mosaic = FALSE
   )
   
   #prepare output
-  #if all of the original inputs were from the "raster" package, export class "RasterLayer"; otherwise, SpatRaster
+  
+  #if all original inputs were from the "raster" package, export class "RasterLayer"; otherwise, SpatRaster
   if(isRasterLayer){
     out <- list(
       shifted = raster(shifted),
@@ -213,14 +188,13 @@ bulkshift <- function(shift, target, preds = NULL, model = "glm", mosaic = FALSE
   }
 
   if(mosaic){
-    if(ext(shift) != ext(target) | res(shift)[1] != res(target)[1] | res(shift)[2] != res(target)[2]){ #if the original "target" and "shift" did not align, choose to resample the "shifted" with respect to the original "target"
-      target <- extend(target, shifted)
-      bs_mosaic <- terra::mosaic(
-        resample(shifted, target, method = mosaicmethod),
-        target
-      )
-      names(bs_mosaic) <- paste0(names(target), '_', names(shift), '_m')
-    }
+    #resample the "shift" with respect to the "target" for mosaicking 
+    bs_mosaic <- terra::mosaic(
+      project(shifted, target, method = mosaicmethod, align = TRUE),
+      target
+    )
+    names(bs_mosaic) <- paste0(names(target), '_', names(shift), '_m')
+    
     #if all of the original inputs were from the "raster" package, export mosaic as class "RasterLayer"
     if(isRasterLayer){
       out <- c(out, mosaic =  raster(bs_mosaic))

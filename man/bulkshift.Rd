@@ -33,7 +33,7 @@ bulkshift(
 
 \item{savedata}{logical. Whether to output the model data.frame.}
 
-\item{sample}{numeric. Proportion of overlapping data to sample for modelling using \link{samplemethods.}}
+\item{sample}{numeric. Proportion of overlapping data to sample for modelling using \link{samplemethods}.}
 
 \item{samplemethods}{character vector. The method used to subsample the data. One or several of "uniform" (the default), "stratify", or "autocorrelation". Specifying multiple methods results in a combined output. See \link{Details}.}
 

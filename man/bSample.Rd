@@ -11,10 +11,10 @@ bSample(x, size, samplemethods = c("uniform"), ...)
 
 \item{size}{sample size}
 
-\item{method}{vector of subsampling methods
-
-#' @import terra
-#' @export}
+\item{method}{vector of subsampling methods}
+}
+\value{
+Vector of cell numbers
 }
 \description{
 Advanced subsampling of a SpatRaster for spatial modelling
