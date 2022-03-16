@@ -1,6 +1,6 @@
-#' Overlap
+#' Extract SpatRaster overlap
 #' 
-#' Extract the union of overlapping SpatRasters with different extents, origins, and projections.
+#' Extract the union of overlapping [terra] SpatRasters with different extents, origins, and projections.
 #' 
 #' @param x SpatRaster. Backscatter dataset undergoing correction.
 #' @param y SpatRaster. Will be algined and/or projected to x if extent, origin, or crs do not match.

@@ -24,7 +24,9 @@ rSample <- function(x, n, prob = FALSE){
   return(out)
 }
 
-#' Advanced subsampling of a SpatRaster for spatial modelling
+#' Subsampling methods for a SpatRaster
+#' 
+#' Advanced subsampling of a [terra] SpatRaster for spatial modelling
 #' 
 #' @param x SpatRaster layer
 #' @param size sample size
