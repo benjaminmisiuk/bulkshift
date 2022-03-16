@@ -18,8 +18,8 @@ mae <- function(y, y_hat){
 #' @param mosaic logical. Mosaic and output the backscatter layers?
 #' @param mosaicmethod character. Which method used to resample the corrected backscatter layer for mosaicking? See [terra::resample()] for details.
 #' @param savedata logical. Whether to output the model data.frame.
-#' @param sample numeric. Proportion of overlapping data to sample for modelling using [samplemethods].
-#' @param samplemethods character vector. The method used to subsample the data. One or several of "uniform" (the default), "stratify", or "autocorrelation". Specifying multiple methods results in a combined output. See [Details].
+#' @param sample numeric. Proportion of overlapping data to sample for modelling using [samplemethods()].
+#' @param samplemethods character vector. The method used to subsample the data. One or several of "uniform" (the default), "stratify", or "autocorrelation". Specifying multiple methods results in a combined output. See Details.
 #' @param crossvalidate numeric. Proportion of data to use for validation. Validation data are drawn from the dataset following saubsampling if [sample] is used.
 #' @param ... Additional parameters to pass to models or subsampling methods.
 #' 
@@ -41,7 +41,6 @@ bulkshift <- function(shift, target, preds = NULL, model = "glm", mosaic = FALSE
   #spatial blocking?
   #test using 1 RasterLayer, 1 SpatRaster, 1 RasterStack, all RasterLayer, 1 RasterStack other RasterLayer
   #'details'
-  #doi
   #bSample docs
   #examples
 
