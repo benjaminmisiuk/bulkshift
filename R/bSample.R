@@ -28,14 +28,14 @@ rSample <- function(x, n, prob = FALSE){
 #' 
 #' @param x SpatRaster layer
 #' @param size sample size
-#' @param method vector of subsampling methods
+#' @param samplemethods vector of subsampling methods. One or multiple of "uniform", "stratify", "autocorrelation".
 #' 
 #' @return Vector of cell numbers
 #' 
 #' @import terra
 #' @export
 
-bSample <- function(x, size, samplemethods = c('uniform'), ...){
+bSample <- function(x, size, samplemethods = c('uniform')){
   
   if(!all(samplemethods %in% c("uniform", "stratify", "autocorrelation"))) stop('all "samplemethods" must be one of "uniform", "stratify" or "autocorrelation"')
   

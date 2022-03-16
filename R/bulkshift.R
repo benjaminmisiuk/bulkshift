@@ -23,6 +23,8 @@ mae <- function(y, y_hat){
 #' @param crossvalidate numeric. Proportion of data to use for validation. Validation data are drawn from the dataset following saubsampling if [sample] is used.
 #' @param ... Additional parameters to pass to models or subsampling methods.
 #' 
+#' @return List of bulkshift objects
+#' 
 #' @references 
 #' Misiuk, B., Brown, C.J., Robert, K., Lacharite, M., 2020. Harmonizing Multi-Source Sonar Backscatter Datasets for Seabed Mapping Using Bulk Shift Approaches. Remote Sensing 12, 601. https://doi.org/10.3390/rs12040601
 #' 
@@ -38,13 +40,11 @@ bulkshift <- function(shift, target, preds = NULL, model = "glm", mosaic = FALSE
   #penalized regression
   #spatial blocking?
   #test using 1 RasterLayer, 1 SpatRaster, 1 RasterStack, all RasterLayer, 1 RasterStack other RasterLayer
-  #spatial subsample
   #'details'
   #doi
   #bSample docs
   #examples
-  #figure out ellipses with bSample
-  
+
   #check for supported models
   if(!model %in% c('mean', 'glm', 'randomForest')) stop('model must be one of "mean", "glm", or "randomForest"')
   

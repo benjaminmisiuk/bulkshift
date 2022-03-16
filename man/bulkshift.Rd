@@ -41,6 +41,9 @@ bulkshift(
 
 \item{...}{Additional parameters to pass to models or subsampling methods.}
 }
+\value{
+List of bulkshift objects
+}
 \description{
 Relative calibration of two partially overlapping sonar backscatter datasets using the methods presented in Misiuk et al. (2020). This is largely a wrapper for the \link{terra} package to facilitate relative calibration of backscatter rasters. Supports several modelling methods and optionally, spatially explicit subsampling and validation.
 }
