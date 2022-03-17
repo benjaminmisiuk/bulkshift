@@ -19,6 +19,7 @@ mae <- function(y, y_hat){
 #' `sample` calls on [bSample] to draw a random sample of the data for modelling. This has two purposes:
 #' 1) to facilitate computation for large datasets, and 
 #' 2) two represent the data more equitably (e.g., where backscatter values are over-represented at a certain level). 
+#' 
 #' To handle the latter issue,`samplemethods` can be set to "stratify", which uses backscatter data quartiles to stratify the sampling.
 #' Setting `samplemethods` to "autocorrelation" weights the sampling spatially using local Moran's I,
 #' as calculated by [terra::autocor()], so that sampling is reduced at areas of high autocorrelation.

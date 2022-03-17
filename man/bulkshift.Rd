@@ -57,11 +57,12 @@ can be added as a single SpatRaster (potentially with multiple layers) using \co
 \enumerate{
 \item to facilitate computation for large datasets, and
 \item two represent the data more equitably (e.g., where backscatter values are over-represented at a certain level).
+}
+
 To handle the latter issue,\code{samplemethods} can be set to "stratify", which uses backscatter data quartiles to stratify the sampling.
 Setting \code{samplemethods} to "autocorrelation" weights the sampling spatially using local Moran's I,
 as calculated by \code{\link[terra:autocor]{terra::autocor()}}, so that sampling is reduced at areas of high autocorrelation.
 Multiple \code{samplemethods} can be combined by providing them as a vector.
-}
 }
 \references{
 Misiuk, B., Brown, C.J., Robert, K., Lacharite, M., 2020. Harmonizing Multi-Source Sonar Backscatter Datasets for Seabed Mapping Using Bulk Shift Approaches. Remote Sensing 12, 601. https://doi.org/10.3390/rs12040601
