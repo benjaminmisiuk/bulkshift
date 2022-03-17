@@ -20,7 +20,7 @@ mae <- function(y, y_hat){
 #' 1) to facilitate computation for large datasets, and 
 #' 2) two represent the data more equitably (e.g., where backscatter values are over-represented at a certain level). 
 #' 
-#' To handle the latter issue,`samplemethods` can be set to "stratify", which uses backscatter data quartiles to stratify the sampling.
+#' To handle the latter issue, `samplemethods` can be set to "stratify", which uses backscatter data quartiles to stratify the sampling.
 #' Setting `samplemethods` to "autocorrelation" weights the sampling spatially using local Moran's I,
 #' as calculated by [terra::autocor()], so that sampling is reduced at areas of high autocorrelation.
 #' Multiple `samplemethods` can be combined by providing them as a vector.
@@ -55,8 +55,6 @@ bulkshift <- function(shift, target, preds = NULL, model = "glm", mosaic = FALSE
   #penalized regression
   #spatial blocking?
   #test using 1 RasterLayer, 1 SpatRaster, 1 RasterStack, all RasterLayer, 1 RasterStack other RasterLayer
-  #detail
-  #bSample docs
   #examples
 
   #check for supported models
