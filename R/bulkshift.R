@@ -63,14 +63,6 @@ mae <- function(y, y_hat){
 
 bulkshift <- function(shift, target, preds = NULL, model = "glm", mosaic = FALSE, mosaicmethod = "bilinear", savedata = TRUE, sample = NULL, samplemethods = "uniform", crossvalidate = NULL, ...){
   
-  #separate the package into exploratory and modelling
-  #the sample index?
-  #gam
-  #penalized regression
-  #spatial blocking?
-  #test using 1 RasterLayer, 1 SpatRaster, 1 RasterStack, all RasterLayer, 1 RasterStack other RasterLayer
-  #examples
-
   #check for supported models
   if(!model %in% c('mean', 'glm', 'randomForest')) stop('model must be one of "mean", "glm", or "randomForest"')
   
