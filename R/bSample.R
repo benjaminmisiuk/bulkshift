@@ -38,6 +38,13 @@ rSample <- function(x, n, prob = FALSE){
 #' 
 #' @return Vector of cell numbers
 #' 
+#' @examples 
+#' bb2017 <- rast(system.file('extdata', 'bb2017.tif', package='bulkshift'))
+#' 
+#' s <- bSample(x = bb2017, size = 1000, samplemethods = c("stratify"))
+#' plot(bb2017)
+#' plot(as.points(bb2017, na.rm = FALSE)[s], add = TRUE)
+#' 
 #' @import terra
 #' @export
 

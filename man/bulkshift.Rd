@@ -31,7 +31,7 @@ bulkshift(
 
 \item{mosaicmethod}{Character. Which method used to resample the corrected backscatter layer for mosaicking? See \code{\link[terra:resample]{terra::resample()}} for details.}
 
-\item{savedata}{Logical. Whether to output the model data.frame.}
+\item{savedata}{Logical. Whether to output the model data.frame. If \code{crossvalidate} is used, the validation data is additionally returned as \code{dataVal}.}
 
 \item{sample}{Numeric. Proportion of overlapping data to sample for modelling using samplemethods.}
 
@@ -59,10 +59,25 @@ can be added as a single SpatRaster (potentially with multiple layers) using \co
 \item two represent the data more equitably (e.g., where backscatter values are over-represented at a certain level).
 }
 
-To handle the latter issue,\code{samplemethods} can be set to "stratify", which uses backscatter data quartiles to stratify the sampling.
+To handle the latter issue, \code{samplemethods} can be set to "stratify", which uses backscatter data quartiles to stratify the sampling.
 Setting \code{samplemethods} to "autocorrelation" weights the sampling spatially using local Moran's I,
 as calculated by \code{\link[terra:autocor]{terra::autocor()}}, so that sampling is reduced at areas of high autocorrelation.
 Multiple \code{samplemethods} can be combined by providing them as a vector.
+}
+\examples{
+bb2016 <- rast(system.file('extdata', 'bb2016.tif', package='bulkshift'))
+bb2017 <- rast(system.file('extdata', 'bb2017.tif', package='bulkshift'))
+bbdepth <- rast(system.file('extdata', 'bbdepth.tif', package='bulkshift'))
+
+#run bulkshift using bathymetry as an additional predictor
+b <- bulkshift(bb2017, bb2016, bbdepth)
+plot(b$shifted)
+
+#cross-validate the model and create a mosaic
+b <- bulkshift(bb2017, bb2016, bbdepth, mosaic = TRUE, crossvalidate = 0.25)
+b$fitStats
+b$testStats
+
 }
 \references{
 Misiuk, B., Brown, C.J., Robert, K., Lacharite, M., 2020. Harmonizing Multi-Source Sonar Backscatter Datasets for Seabed Mapping Using Bulk Shift Approaches. Remote Sensing 12, 601. https://doi.org/10.3390/rs12040601

@@ -32,13 +32,27 @@ mae <- function(y, y_hat){
 #' @param model Character. Method used to model error between backscatter datasets. Currently supported models are "mean" (i.e., intercept-only), "glm", and "randomForest". Model defaults are retained; use `...` to specify additional parameters.
 #' @param mosaic Logical. Mosaic and output the backscatter layers?
 #' @param mosaicmethod Character. Which method used to resample the corrected backscatter layer for mosaicking? See [terra::resample()] for details.
-#' @param savedata Logical. Whether to output the model data.frame.
+#' @param savedata Logical. Whether to output the model data.frame. If `crossvalidate` is used, the validation data is additionally returned as `dataVal`.
 #' @param sample Numeric. Proportion of overlapping data to sample for modelling using samplemethods.
 #' @param samplemethods Character vector. The method used to subsample the data. One or several of "uniform" (the default), "stratify", or "autocorrelation". Specifying multiple methods results in a combined output. See Details.
 #' @param crossvalidate Numeric. Proportion of data to use for validation. Validation data are drawn from the dataset following saubsampling if `sample` is used.
 #' @param ... Additional parameters passed to the model.
 #' 
 #' @return List of bulkshift objects
+#' 
+#' @examples
+#' bb2016 <- rast(system.file('extdata', 'bb2016.tif', package='bulkshift'))
+#' bb2017 <- rast(system.file('extdata', 'bb2017.tif', package='bulkshift'))
+#' bbdepth <- rast(system.file('extdata', 'bbdepth.tif', package='bulkshift'))
+#' 
+#' #run bulkshift using bathymetry as an additional predictor
+#' b <- bulkshift(bb2017, bb2016, bbdepth)
+#' plot(b$shifted)
+#' 
+#' #cross-validate the model and create a mosaic
+#' b <- bulkshift(bb2017, bb2016, bbdepth, mosaic = TRUE, crossvalidate = 0.25)
+#' b$fitStats
+#' b$testStats
 #' 
 #' @references 
 #' Misiuk, B., Brown, C.J., Robert, K., Lacharite, M., 2020. Harmonizing Multi-Source Sonar Backscatter Datasets for Seabed Mapping Using Bulk Shift Approaches. Remote Sensing 12, 601. https://doi.org/10.3390/rs12040601
