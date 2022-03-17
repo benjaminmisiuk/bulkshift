@@ -1,4 +1,5 @@
 # bulkshift
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6363413.svg)](https://doi.org/10.5281/zenodo.6363412)
 ### Backscatter raster harmonization for seabed mapping in R
 
 This package facilitates relative calibration for processed sonar backscatter raster datasets using the methods described in Misiuk et al. (2020). 
