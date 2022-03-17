@@ -25,21 +25,21 @@ bulkshift(
 
 \item{preds}{SpatRaster. One or more layers to use as additional predictor variables for backscatter calibration model.}
 
-\item{model}{character. Method used to model error between backscatter datasets. Currently supported models are "mean" (i.e., intercept-only), "glm", and "randomForest". Model defaults are retained; use "..." to specify additional parameters.}
+\item{model}{Character. Method used to model error between backscatter datasets. Currently supported models are "mean" (i.e., intercept-only), "glm", and "randomForest". Model defaults are retained; use \code{...} to specify additional parameters.}
 
-\item{mosaic}{logical. Mosaic and output the backscatter layers?}
+\item{mosaic}{Logical. Mosaic and output the backscatter layers?}
 
-\item{mosaicmethod}{character. Which method used to resample the corrected backscatter layer for mosaicking? See \code{\link[terra:resample]{terra::resample()}} for details.}
+\item{mosaicmethod}{Character. Which method used to resample the corrected backscatter layer for mosaicking? See \code{\link[terra:resample]{terra::resample()}} for details.}
 
-\item{savedata}{logical. Whether to output the model data.frame.}
+\item{savedata}{Logical. Whether to output the model data.frame.}
 
-\item{sample}{numeric. Proportion of overlapping data to sample for modelling using samplemethods.}
+\item{sample}{Numeric. Proportion of overlapping data to sample for modelling using samplemethods.}
 
-\item{samplemethods}{character vector. The method used to subsample the data. One or several of "uniform" (the default), "stratify", or "autocorrelation". Specifying multiple methods results in a combined output. See \code{Details}.}
+\item{samplemethods}{Character vector. The method used to subsample the data. One or several of "uniform" (the default), "stratify", or "autocorrelation". Specifying multiple methods results in a combined output. See Details.}
 
-\item{crossvalidate}{numeric. Proportion of data to use for validation. Validation data are drawn from the dataset following saubsampling if \code{sample} is used.}
+\item{crossvalidate}{Numeric. Proportion of data to use for validation. Validation data are drawn from the dataset following saubsampling if \code{sample} is used.}
 
-\item{...}{Additional parameters to pass to models.}
+\item{...}{Additional parameters passed to the model.}
 }
 \value{
 List of bulkshift objects
@@ -55,9 +55,9 @@ can be added as a single SpatRaster (potentially with multiple layers) using \co
 
 \code{sample} calls on \link{bSample} to draw a random sample of the data for modelling. This has two purposes:
 \enumerate{
-\item to facilitate computation for large datasets, and 2) two represent the data more equitably
-(e.g., where backscatter values are over-represented at a certain level). To handle the latter issue,
-\code{samplemethods} can be set to "stratify", which uses backscatter data quartiles to stratify the sampling.
+\item to facilitate computation for large datasets, and
+\item two represent the data more equitably (e.g., where backscatter values are over-represented at a certain level).
+To handle the latter issue,\code{samplemethods} can be set to "stratify", which uses backscatter data quartiles to stratify the sampling.
 Setting \code{samplemethods} to "autocorrelation" weights the sampling spatially using local Moran's I,
 as calculated by \code{\link[terra:autocor]{terra::autocor()}}, so that sampling is reduced at areas of high autocorrelation.
 Multiple \code{samplemethods} can be combined by providing them as a vector.

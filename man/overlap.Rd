@@ -7,9 +7,7 @@
 overlap(x, y)
 }
 \arguments{
-\item{x}{SpatRaster.}
-
-\item{y}{SpatRaster. Will be algined and/or projected to x if extent, origin, or crs do not match.}
+\item{x, y}{SpatRaster.}
 }
 \value{
 SpatRaster
@@ -18,6 +16,6 @@ SpatRaster
 Extract the union of overlapping \link{terra} SpatRasters with different extents, origins, and projections.
 }
 \details{
-SpatRaster y will be transformed (e.g., projected, resampled) with respect to x, if
+SpatRaster y will be transformed (e.g., projected, resampled) with respect to x if
 extents, origins, or crs do not match.
 }

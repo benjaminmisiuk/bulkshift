@@ -9,9 +9,9 @@ bSample(x, size, samplemethods = c("uniform"))
 \arguments{
 \item{x}{SpatRaster layer}
 
-\item{size}{sample size}
+\item{size}{Sample size.}
 
-\item{samplemethods}{vector of subsampling methods. One or multiple of "uniform", "stratify", "autocorrelation".}
+\item{samplemethods}{Vector of subsampling methods. One or multiple of "uniform", "stratify", "autocorrelation".}
 }
 \value{
 Vector of cell numbers
