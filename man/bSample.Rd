@@ -24,3 +24,11 @@ If \code{samplemethods = "stratify"}, samples are distributed equally among quar
 \code{samplemethods = "autocorrelation"} weights sampling by the inverse of local Moran's I, which is
 calculated used \code{\link[terra:autocor]{terra::autocor()}}.
 }
+\examples{
+bb2017 <- rast(system.file('extdata', 'bb2017.tif', package='bulkshift'))
+
+s <- bSample(x = bb2017, size = 1000, samplemethods = c("stratify"))
+plot(bb2017)
+plot(as.points(bb2017, na.rm = FALSE)[s], add = TRUE)
+
+}
