@@ -2,7 +2,7 @@
 % Please edit documentation in R/bSample.R
 \name{bSample}
 \alias{bSample}
-\title{Advanced subsampling of a SpatRaster for spatial modelling}
+\title{Subsampling methods for a SpatRaster}
 \usage{
 bSample(x, size, samplemethods = c("uniform"))
 }
@@ -17,5 +17,10 @@ bSample(x, size, samplemethods = c("uniform"))
 Vector of cell numbers
 }
 \description{
-Advanced subsampling of a SpatRaster for spatial modelling
+Advanced subsampling of a \link{terra} SpatRaster for spatial modelling
+}
+\details{
+If \code{samplemethods = "stratify"}, samples are distributed equally among quartiles of x.
+\code{samplemethods = "autocorrelation"} weights sampling by the inverse of local Moran's I, which is
+calculated used \code{\link[terra:autocor]{terra::autocor()}}.
 }

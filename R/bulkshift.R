@@ -11,6 +11,20 @@ mae <- function(y, y_hat){
 #' 
 #' Relative calibration of two partially overlapping sonar backscatter datasets using the methods presented in Misiuk et al. (2020). This is largely a wrapper for the [terra] package to facilitate relative calibration of backscatter rasters. Supports several modelling methods and optionally, spatially explicit subsampling and validation.
 #' 
+#' @details By default, this function fits a linear regression to the error between two backscatter 
+#' datasets using [glm]. The modelling method can be changed using the `model` argument, but extrapolation
+#' is important, and regression has performed well in simulations. Additional predictors such as bathymetry
+#' can be added as a single SpatRaster (potentially with multiple layers) using `preds`.
+#' 
+#' `sample` calls on [bSample] to draw a random sample of the data for modelling. This has two purposes:
+#' 1) to facilitate computation for large datasets, and 2) two represent the data more equitably
+#' (e.g., where backscatter values are over-represented at a certain level). To handle the latter issue,
+#' `samplemethods` can be set to "stratify", which uses backscatter data quartiles to stratify the sampling.
+#' Setting `samplemethods` to "autocorrelation" weights the sampling spatially using local Moran's I,
+#' as calculated by [terra::autocor()], so that sampling is reduced at areas of high autocorrelation.
+#' Multiple `samplemethods` can be combined by providing them as a vector.
+#' 
+#' 
 #' @param shift SpatRaster. Backscatter dataset undergoing correction.
 #' @param target SpatRaster. Backscatter dataset used as reference.
 #' @param preds SpatRaster. One or more layers to use as additional predictor variables for backscatter calibration model.
@@ -19,8 +33,8 @@ mae <- function(y, y_hat){
 #' @param mosaicmethod character. Which method used to resample the corrected backscatter layer for mosaicking? See [terra::resample()] for details.
 #' @param savedata logical. Whether to output the model data.frame.
 #' @param sample numeric. Proportion of overlapping data to sample for modelling using samplemethods.
-#' @param samplemethods character vector. The method used to subsample the data. One or several of "uniform" (the default), "stratify", or "autocorrelation". Specifying multiple methods results in a combined output. See Details.
-#' @param crossvalidate numeric. Proportion of data to use for validation. Validation data are drawn from the dataset following saubsampling if [sample] is used.
+#' @param samplemethods character vector. The method used to subsample the data. One or several of "uniform" (the default), "stratify", or "autocorrelation". Specifying multiple methods results in a combined output. See `Details`.
+#' @param crossvalidate numeric. Proportion of data to use for validation. Validation data are drawn from the dataset following saubsampling if `sample` is used.
 #' @param ... Additional parameters to pass to models.
 #' 
 #' @return List of bulkshift objects

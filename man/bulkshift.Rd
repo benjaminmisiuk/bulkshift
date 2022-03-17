@@ -35,17 +35,33 @@ bulkshift(
 
 \item{sample}{numeric. Proportion of overlapping data to sample for modelling using samplemethods.}
 
-\item{samplemethods}{character vector. The method used to subsample the data. One or several of "uniform" (the default), "stratify", or "autocorrelation". Specifying multiple methods results in a combined output. See Details.}
+\item{samplemethods}{character vector. The method used to subsample the data. One or several of "uniform" (the default), "stratify", or "autocorrelation". Specifying multiple methods results in a combined output. See \code{Details}.}
 
-\item{crossvalidate}{numeric. Proportion of data to use for validation. Validation data are drawn from the dataset following saubsampling if \link{sample} is used.}
+\item{crossvalidate}{numeric. Proportion of data to use for validation. Validation data are drawn from the dataset following saubsampling if \code{sample} is used.}
 
-\item{...}{Additional parameters to pass to models or subsampling methods.}
+\item{...}{Additional parameters to pass to models.}
 }
 \value{
 List of bulkshift objects
 }
 \description{
 Relative calibration of two partially overlapping sonar backscatter datasets using the methods presented in Misiuk et al. (2020). This is largely a wrapper for the \link{terra} package to facilitate relative calibration of backscatter rasters. Supports several modelling methods and optionally, spatially explicit subsampling and validation.
+}
+\details{
+By default, this function fits a linear regression to the error between two backscatter
+datasets using \link{glm}. The modelling method can be changed using the \code{model} argument, but extrapolation
+is important, and regression has performed well in simulations. Additional predictors such as bathymetry
+can be added as a single SpatRaster (potentially with multiple layers) using \code{preds}.
+
+\code{sample} calls on \link{bSample} to draw a random sample of the data for modelling. This has two purposes:
+\enumerate{
+\item to facilitate computation for large datasets, and 2) two represent the data more equitably
+(e.g., where backscatter values are over-represented at a certain level). To handle the latter issue,
+\code{samplemethods} can be set to "stratify", which uses backscatter data quartiles to stratify the sampling.
+Setting \code{samplemethods} to "autocorrelation" weights the sampling spatially using local Moran's I,
+as calculated by \code{\link[terra:autocor]{terra::autocor()}}, so that sampling is reduced at areas of high autocorrelation.
+Multiple \code{samplemethods} can be combined by providing them as a vector.
+}
 }
 \references{
 Misiuk, B., Brown, C.J., Robert, K., Lacharite, M., 2020. Harmonizing Multi-Source Sonar Backscatter Datasets for Seabed Mapping Using Bulk Shift Approaches. Remote Sensing 12, 601. https://doi.org/10.3390/rs12040601

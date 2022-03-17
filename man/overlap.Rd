@@ -2,12 +2,12 @@
 % Please edit documentation in R/overlap.R
 \name{overlap}
 \alias{overlap}
-\title{Overlap}
+\title{Extract SpatRaster overlap}
 \usage{
 overlap(x, y)
 }
 \arguments{
-\item{x}{SpatRaster. Backscatter dataset undergoing correction.}
+\item{x}{SpatRaster.}
 
 \item{y}{SpatRaster. Will be algined and/or projected to x if extent, origin, or crs do not match.}
 }
@@ -15,5 +15,9 @@ overlap(x, y)
 SpatRaster
 }
 \description{
-Extract the union of overlapping SpatRasters with different extents, origins, and projections.
+Extract the union of overlapping \link{terra} SpatRasters with different extents, origins, and projections.
+}
+\details{
+SpatRaster y will be transformed (e.g., projected, resampled) with respect to x, if
+extents, origins, or crs do not match.
 }

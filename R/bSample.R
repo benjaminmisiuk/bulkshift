@@ -28,6 +28,10 @@ rSample <- function(x, n, prob = FALSE){
 #' 
 #' Advanced subsampling of a [terra] SpatRaster for spatial modelling
 #' 
+#' @details If `samplemethods = "stratify"`, samples are distributed equally among quartiles of x. 
+#' `samplemethods = "autocorrelation"` weights sampling by the inverse of local Moran's I, which is
+#' calculated used [terra::autocor()].
+#' 
 #' @param x SpatRaster layer
 #' @param size sample size
 #' @param samplemethods vector of subsampling methods. One or multiple of "uniform", "stratify", "autocorrelation".
