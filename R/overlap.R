@@ -2,11 +2,10 @@
 #' 
 #' Extract the union of overlapping [terra] SpatRasters with different extents, origins, and projections.
 #' 
-#' @details SpatRaster y will be transformed (e.g., projected, resampled) with respect to x, if 
+#' @details SpatRaster y will be transformed (e.g., projected, resampled) with respect to x if 
 #' extents, origins, or crs do not match.
 #' 
-#' @param x SpatRaster.
-#' @param y SpatRaster. Will be algined and/or projected to x if extent, origin, or crs do not match.
+#' @param x,y SpatRaster.
 #' 
 #' @return SpatRaster
 #' 

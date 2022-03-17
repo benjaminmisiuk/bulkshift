@@ -33,8 +33,8 @@ rSample <- function(x, n, prob = FALSE){
 #' calculated used [terra::autocor()].
 #' 
 #' @param x SpatRaster layer
-#' @param size sample size
-#' @param samplemethods vector of subsampling methods. One or multiple of "uniform", "stratify", "autocorrelation".
+#' @param size Sample size.
+#' @param samplemethods Vector of subsampling methods. One or multiple of "uniform", "stratify", "autocorrelation".
 #' 
 #' @return Vector of cell numbers
 #' 
