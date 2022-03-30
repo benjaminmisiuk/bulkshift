@@ -77,6 +77,8 @@ bulkshift <- function(shift, target, preds = NULL, model = "glm", mosaic = FALSE
   if(class(shift)[1] != 'SpatRaster' | class(target)[1] != 'SpatRaster') stop('all inputs must be rasters.')
   if(class(preds)[1] != 'SpatRaster' & !is.null(preds)) stop('predictors must be rasters.')
   
+  if(is.factor(shift) | is.factor(target)) stop('backscatter layers should not be factors.')
+  
   #calculate error and get all SpatRasters masked at the overlap
   ovlp <- overlap(shift, target); names(ovlp) <- c("shift", "target")
   err_ras <- ovlp$target - ovlp$shift; names(err_ras) <- 'error'
