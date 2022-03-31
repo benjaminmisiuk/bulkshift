@@ -7,14 +7,14 @@
 bSample(x, size, samplemethods = c("uniform"))
 }
 \arguments{
-\item{x}{SpatRaster layer}
+\item{x}{SpatRaster layer.}
 
 \item{size}{Sample size.}
 
 \item{samplemethods}{Vector of subsampling methods. One or multiple of "uniform", "stratify", "autocorrelation".}
 }
 \value{
-Vector of cell numbers
+Vector of cell numbers.
 }
 \description{
 Advanced subsampling of a \link{terra} SpatRaster for spatial modelling

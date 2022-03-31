@@ -4,10 +4,12 @@
 \alias{overlap}
 \title{Extract SpatRaster overlap}
 \usage{
-overlap(x, y)
+overlap(x, y, last = FALSE)
 }
 \arguments{
 \item{x, y}{SpatRaster.}
+
+\item{last}{Logical. Should only the last layer be returned?}
 }
 \value{
 SpatRaster
