@@ -6,6 +6,7 @@
 #' extents, origins, or crs do not match.
 #' 
 #' @param x,y SpatRaster.
+#' @param last Logical. Should only the last layer be returned?
 #' 
 #' @return SpatRaster
 #' 
@@ -29,12 +30,12 @@
 #' @import terra
 #' @export
 
-overlap <- function(x, y){
+overlap <- function(x, y ,last = FALSE){
   
   #check for crs matches
   if(crs(y) != crs(x)){
     warning('projecting data to match CRS.')
-    target <- project(y, x)
+    y <- project(y, x)
   }
   
   #resample SpatRaster y if necessary
@@ -45,10 +46,14 @@ overlap <- function(x, y){
   #mask x and y at the area of overlap 
   ovlp <- rast(
     list(
-      mask(x, y),
-      mask(y, x)
+      mask(x, y[[1]]),
+      mask(y, x[[1]])
     )
   )
   
-  return(ovlp)
+  if(last){
+    return(ovlp[[nlyr(ovlp)]])
+  } else {
+    return(ovlp)
+  }
 }
