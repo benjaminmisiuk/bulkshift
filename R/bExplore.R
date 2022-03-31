@@ -66,7 +66,8 @@ bExplore <- function(x, y, preds = NULL, error_map = TRUE, boxplot = TRUE, error
     readline(prompt="Press [enter] for next plot")
     boxplot(
       list(as.vector(x), as.vector(y), df[ ,1], df[ ,2]),
-      names = c(names(x), names(y), paste(names(x), 'overlap'), paste(names(y), 'overlap'))
+      names = c(names(x), names(y), paste(names(x), 'overlap'), paste(names(y), 'overlap')),
+      cex.axis = 0.75
     )
   }
   

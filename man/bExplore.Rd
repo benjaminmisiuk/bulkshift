@@ -40,7 +40,7 @@ Explore backscatter layer statistics and relationships prior to harmonization to
 This function creates a series of helpful plots for comparing backscatter datasets prior to attempting harmonization (e.g., using \link{bulkshift}).
 Hit enter to proceed through the plots.
 
-\code{boxplot = TRUE} draws box plots comparing the full distributions of x and y, and also the distributions where they overlap. This
+\code{boxplot = TRUE} draws box plots comparing the full distributions of x and y, and also the distributions only where they overlap. This
 is useful for assessing the representativeness of the area overlap (i.e., whether the error model will need to extrapolate).
 
 Local polynomial fitting using loess can be slow with large sample sizes. Subsampling using \code{loess_samp} is used here only to fit
