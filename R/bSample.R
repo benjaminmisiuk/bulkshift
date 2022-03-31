@@ -32,11 +32,11 @@ rSample <- function(x, n, prob = FALSE){
 #' `samplemethods = "autocorrelation"` weights sampling by the inverse of local Moran's I, which is
 #' calculated used [terra::autocor()].
 #' 
-#' @param x SpatRaster layer
+#' @param x SpatRaster layer.
 #' @param size Sample size.
 #' @param samplemethods Vector of subsampling methods. One or multiple of "uniform", "stratify", "autocorrelation".
 #' 
-#' @return Vector of cell numbers
+#' @return Vector of cell numbers.
 #' 
 #' @examples 
 #' bb2017 <- rast(system.file('extdata', 'bb2017.tif', package='bulkshift'))

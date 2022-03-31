@@ -38,7 +38,7 @@ mae <- function(y, y_hat){
 #' @param crossvalidate Numeric. Proportion of data to use for validation. Validation data are drawn from the dataset following saubsampling if `sample` is used.
 #' @param ... Additional parameters passed to the model.
 #' 
-#' @return List of bulkshift objects
+#' @return List of bulkshift objects.
 #' 
 #' @examples
 #' bb2016 <- rast(system.file('extdata', 'bb2016.tif', package='bulkshift'))
