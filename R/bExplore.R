@@ -1,16 +1,19 @@
 #' Exploratory backscatter layer analysis
 #' 
-#' Explore backscatter layer statistics and relationships prior to harmonization to inform the bulk shift procedure
+#' Explore backscatter layer statistics and relationships prior to harmonization to inform the bulk shift procedure.
 #' 
 #' @details 
-#' `boxplot = TRUE` draws box plots comparing the full distributions of x and y, and also the distributions where they overlap. THis
+#' This function creates a series of helpful plots for comparing backscatter datasets prior to attempting harmonization (e.g., using [bulkshift]). 
+#' Hit enter to proceed through the plots. 
+#' 
+#' `boxplot = TRUE` draws box plots comparing the full distributions of x and y, and also the distributions where they overlap. This
 #' is useful for assessing the representativeness of the area overlap (i.e., whether the error model will need to extrapolate).
 #' 
 #' Local polynomial fitting using loess can be slow with large sample sizes. Subsampling using `loess_samp` is used here only to fit 
 #' the smoother; it is predicted on the entire dataset. Additional arguments can be passed to `...` (see [loess] for more information).
 #' 
-#' @param x,y SpatRasters. Backscatter layers to compare.
-#' @param preds SpatRaster. Predictors to explore for explaining error between `x` and `y`.
+#' @param x,y [terra] SpatRasters. Backscatter layers to compare.
+#' @param preds [terra] SpatRaster. Predictors to explore for explaining error between `x` and `y`.
 #' @param error_map Logical. Whether to plot a map of error between `x` and `y`.
 #' @param boxplot Logical. Whether to draw boxplots comparing `x` and `y`. See Details.
 #' @param error_plot Logical. Whether to plot the error as a function of `x`, and also `preds` if specified.
@@ -18,8 +21,12 @@
 #' @param loess_samp Numeric. Maximum number of samples used to estimate the [loess] smoother. See Details.
 #' @param ... Additional arguments to pass to [loess]. See Details.
 #' 
-#' 
 #' @examples
+#' bb2016 <- rast(system.file('extdata', 'bb2016.tif', package='bulkshift'))
+#' bb2017 <- rast(system.file('extdata', 'bb2017.tif', package='bulkshift'))
+#' bbdepth <- rast(system.file('extdata', 'bbdepth.tif', package='bulkshift'))
+#' 
+#' bExplore(bb2017, bb2016, preds = bbdepth)
 #' 
 #' @import terra
 #' @export

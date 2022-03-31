@@ -17,9 +17,9 @@ bExplore(
 )
 }
 \arguments{
-\item{x, y}{SpatRasters. Backscatter layers to compare.}
+\item{x, y}{\link{terra} SpatRasters. Backscatter layers to compare.}
 
-\item{preds}{SpatRaster. Predictors to explore for explaining error between \code{x} and \code{y}.}
+\item{preds}{\link{terra} SpatRaster. Predictors to explore for explaining error between \code{x} and \code{y}.}
 
 \item{error_map}{Logical. Whether to plot a map of error between \code{x} and \code{y}.}
 
@@ -34,15 +34,23 @@ bExplore(
 \item{...}{Additional arguments to pass to \link{loess}. See Details.}
 }
 \description{
-Explore backscatter layer statistics and relationships prior to harmonization to inform the bulk shift procedure
+Explore backscatter layer statistics and relationships prior to harmonization to inform the bulk shift procedure.
 }
 \details{
-\code{boxplot = TRUE} draws box plots comparing the full distributions of x and y, and also the distributions where they overlap. THis
+This function creates a series of helpful plots for comparing backscatter datasets prior to attempting harmonization (e.g., using \link{bulkshift}).
+Hit enter to proceed through the plots.
+
+\code{boxplot = TRUE} draws box plots comparing the full distributions of x and y, and also the distributions where they overlap. This
 is useful for assessing the representativeness of the area overlap (i.e., whether the error model will need to extrapolate).
 
 Local polynomial fitting using loess can be slow with large sample sizes. Subsampling using \code{loess_samp} is used here only to fit
 the smoother; it is predicted on the entire dataset. Additional arguments can be passed to \code{...} (see \link{loess} for more information).
 }
 \examples{
+bb2016 <- rast(system.file('extdata', 'bb2016.tif', package='bulkshift'))
+bb2017 <- rast(system.file('extdata', 'bb2017.tif', package='bulkshift'))
+bbdepth <- rast(system.file('extdata', 'bbdepth.tif', package='bulkshift'))
+
+bExplore(bb2017, bb2016, preds = bbdepth)
 
 }
