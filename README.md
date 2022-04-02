@@ -41,7 +41,7 @@ A function is provided to examine the spatial error between backscatter datasets
 ```
 #plot all in one window
 par(mfrow = c(2,2))
-bExplore(bb2017, bb2016, preds = bbdepth)
+bExplore(x = bb2017, y = bb2016, preds = bbdepth)
 ```
 ![](images/bExplore.png)
 
@@ -96,7 +96,7 @@ plot(b$data$target, b$data$shifted)
 We could also call `bExplore` again to compare the "shifted" dataset to the "target":
 ```
 par(mfrow = c(2,2))
-bExplore(b$shifted, bb2016)
+bExplore(x = b$shifted, y = bb2016)
 ```
 ![](images/bEvaluate.png)
 
