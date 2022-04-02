@@ -39,7 +39,6 @@ The workflow for relative calibration and mosaicking these datasets is broken in
 ### 1. Data exploration
 A function is provided to examine the spatial error between backscatter datasets, data distributions, and relationships between the error and other predictor variables such as depth (see Misiuk et al. 2020 for details).
 ```
-#plot all in one window
 par(mfrow = c(2,2))
 bExplore(x = bb2017, y = bb2016, preds = bbdepth)
 ```
