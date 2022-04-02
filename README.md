@@ -93,7 +93,7 @@ plot(b$data$target, b$data$shifted)
 ```
 ![](images/bshift_eg4.png)
 
-We could also call `bExplore` again to compare the "shifted" dataset to the "target".
+We could also call `bExplore` again to compare the "shifted" dataset to the "target":
 ```
 par(mfrow = c(2,2))
 bExplore(b$shifted, bb2016)
