@@ -22,7 +22,7 @@ to read rasters into R.
 library(terra)
 library(bulkshift)
 ```
-Example datasets from the Bedford Basin (Misiuk et al., 2020) are provided as part of the package. These are backscatter
+Example datasets from the Bedford Basin (Misiuk et al. 2020) are provided as part of the package. These are backscatter
 datasets collected during two different surveys, and also a depth raster.
 ```
 bb2016 <- rast(system.file('extdata', 'bb2016.tif', package='bulkshift'))
