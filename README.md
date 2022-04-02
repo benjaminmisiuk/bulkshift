@@ -14,7 +14,7 @@ You can use the remotes package to install bulkshift from github. Install remote
 install.packages("remotes")
 remotes::install_github("benjaminmisiuk/bulkshift")
 ```
-## Basic functionality
+## Functionality
 Load the bulkshift and terra libraries. The terra package should have installed along with bulkshift. You can install
 it explicitly using `install.packages("terra")`. While terra is not required to load bulkshift, you will need it
 to read rasters into R.
@@ -35,7 +35,19 @@ plot(mosaic(bb2016, bb2017), col = gray.colors(100))
 ```
 ![](images/bshift_eg1.png)
 
-At its most basic, the bulk shift performs relative calibration using mutual overlap between surveys:
+The workflow for relative calibration and mosaicking these datasets is broken into three parts using this package.
+### 1. Data exploration
+A function is provided to examine the spatial error between backscatter datasets, data distributions, and relationships between the error and other predictor variables such as depth (see Misiuk et al. 2020 for details).
+```
+#plot all in one window
+par(mfrow = c(2,2))
+bExplore(bb2017, bb2016, preds = bbdepth)
+```
+![](images/bExplore.png)
+
+These images are normally plotted in sequence, but `par()` is used here to produce a single figure. We can see from the map that the error varies spatially. The first two boxplots show distributions of the full backscatter datasets, while the second two show distributions only where the datasets overlap, corresponding to the map. If the data at the area of overlap do not cover the full distributions of backscatter values, the models in the next step may need to extrapolate. The two scatterplots show how the error between datasets differs as a function of the 2017 dataset (left) and the water depth (right). A LOESS regression is fit by default to aid in vizualization, but can be disabled using `loess = FALSE`.
+### 2. The bulk shift
+At its most basic, the bulk shift performs relative calibration using the overlap between surveys:
 ```
 b <- bulkshift(shift = bb2017, target = bb2016)
 ```
@@ -55,6 +67,7 @@ b$errorModel
 ```
 We can see that the model is a GLM. Recall that the response variable is the error between datasets, therefore, the coefficient for "shift" describes the change in error per unit of the "shift" backscatter dataset. The corrected backscatter layer can be plotted:
 ```
+par(mfrow = c(1,1))
 plot(b$shifted)
 ```
 ![](images/bshift_eg2.png)
@@ -66,7 +79,8 @@ plot(b$mosaic, col = gray.colors(100))
 ```
 ![](images/bshift_eg3.png)
 
-We can then observe statistics such as the variance explained (VE), mean absolute error (MAE), and Pearson correlation between the datasets before and after correction. If a proportion of data were set aside for validation using the `crossvalidate` argument, test statistics will additionally be returned. The model data are also returned by default, and relationships between backscatter datasets before and after correction can be compared. These data can additionally be used to calculate your own bespoke validation statistics, or to apply modelling methods that are not implemented in the package.
+### 3. Evaluation
+After applying the `bulkshift()` function, we can observe statistics such as the variance explained (VE), mean absolute error (MAE), and Pearson correlation between the datasets before and after correction. If a proportion of data were set aside for validation using the `crossvalidate` argument, test statistics will additionally be returned. The model data are also returned by default, and relationships between backscatter datasets before and after correction can be compared. These data can additionally be used to calculate your own bespoke validation statistics, or to apply modelling methods that are not implemented in the package.
 ```
 b$fitStats
 #     layer         VE      MAE         r
@@ -78,6 +92,13 @@ plot(b$data$target, b$data$shift)
 plot(b$data$target, b$data$shifted)
 ```
 ![](images/bshift_eg4.png)
+
+We could also call `bExplore` again to compare the "shifted" dataset to the "target".
+```
+par(mfrow = c(2,2))
+bExplore(b$shifted, bb2016)
+```
+![](images/bEvaluate.png)
 
 # References
 Misiuk, B., Brown, C.J., Robert, K., Lacharite, M., 2020. Harmonizing Multi-Source Sonar Backscatter Datasets for Seabed Mapping Using Bulk Shift Approaches. Remote Sensing 12, 601. https://doi.org/10.3390/rs12040601
