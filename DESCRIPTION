@@ -1,9 +1,10 @@
 Package: bulkshift
-Title: Relative Backscatter Calibration using the Bulk Shift Method
-Version: 0.0.0.9000
+Title: Backscatter raster harmonization for seabed mapping in R
+Version: 0.1.2
 Authors@R: 
     person("Benjamin", "Misiuk", , "benjaminmisiuk@gmail.com", role = c("aut", "cre"))
-Description: Pending.
+URL: https://github.com/benjaminmisiuk/bulkshift
+Description: This package facilitates relative calibration for processed sonar backscatter raster datasets using the methods described in Misiuk et al. (2020). It also extends these methods by providing functionality for advanced subsampling to handle dataset imbalance and spatial autocorrelation, and support for additional modelling methods.
 License: `use_mit_license()`
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
