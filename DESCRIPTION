@@ -1,6 +1,7 @@
 Package: bulkshift
 Title: Backscatter raster harmonization for seabed mapping in R
 Version: 0.1.2
+Date: 2022-04-02
 Authors@R: 
     person("Benjamin", "Misiuk", , "benjaminmisiuk@gmail.com", role = c("aut", "cre"))
 URL: https://github.com/benjaminmisiuk/bulkshift
