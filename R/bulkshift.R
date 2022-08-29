@@ -143,7 +143,7 @@ bulkshift <- function(shift, target, preds = NULL, model = "glm", mosaic = FALSE
     MAE = mae(y = df$error + df$shift, y_hat = df$shift),
     r = c(cor(df$error + df$shift, df$shift))
   )
-  p <- predict(err_mod, df, type = 'response')
+  p <- c(predict(err_mod, df, type = 'response'))
   fitStats <- rbind(
     fitStats,
     data.frame(
