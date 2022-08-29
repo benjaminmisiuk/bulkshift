@@ -141,7 +141,7 @@ bulkshift <- function(shift, target, preds = NULL, model = "glm", mosaic = FALSE
     layer = "Original",
     VE = ve(y = df$error + df$shift, y_hat = df$shift),
     MAE = mae(y = df$error + df$shift, y_hat = df$shift),
-    r = cor(df$error + df$shift, df$shift)
+    r = c(cor(df$error + df$shift, df$shift))
   )
   p <- predict(err_mod, df, type = 'response')
   fitStats <- rbind(
@@ -177,7 +177,7 @@ bulkshift <- function(shift, target, preds = NULL, model = "glm", mosaic = FALSE
       layer = "Original",
       VE = ve(y = df_out$error + df_out$shift, y_hat = df_out$shift),
       MAE = mae(y = df_out$error + df_out$shift, y_hat = df_out$shift),
-      r = cor(df_out$error + df_out$shift, df_out$shift)
+      r = c(cor(df_out$error + df_out$shift, df_out$shift))
     )
     p_out <- predict(err_mod, df_out, type = 'response')
     testStats <- rbind(
@@ -186,7 +186,7 @@ bulkshift <- function(shift, target, preds = NULL, model = "glm", mosaic = FALSE
         layer = "Corrected",
         VE = ve(y = df_out$error + df_out$shift, y_hat = p_out + df_out$shift),
         MAE = mae(y = df_out$error + df_out$shift, y_hat = p_out + df_out$shift),
-        r = cor(df_out$error + df_out$shift, p_out + df_out$shift)
+        r = c(cor(df_out$error + df_out$shift, p_out + df_out$shift))
       )
     )
     out <- c(out, list(testStats = testStats))
