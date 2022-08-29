@@ -130,7 +130,7 @@ bulkshift <- function(shift, target, preds = NULL, model = "glm", mosaic = FALSE
   if(model == 'mean') err_mod <- glm(df[ ,1] ~ 1)
   if(model == 'glm') err_mod <- glm(form, data = df, ...)
   if(model == 'randomForest') err_mod <- randomForest::randomForest(form, data = df, ...)
-  if(model == 'mars') err_mod <- earth::earth(form, data = df, ...)
+  if(model == 'earth') err_mod <- earth::earth(form, data = df, ...)
   
   #use the model to predict the error over the 'shift' dataset
   err_pred <- predict(ovlp_p, err_mod, type = 'response')
