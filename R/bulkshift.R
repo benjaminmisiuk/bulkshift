@@ -29,7 +29,7 @@ mae <- function(y, y_hat){
 #' @param shift SpatRaster. Backscatter dataset undergoing correction.
 #' @param target SpatRaster. Backscatter dataset used as reference.
 #' @param preds SpatRaster. One or more layers to use as additional predictor variables for backscatter calibration model.
-#' @param model Character. Method used to model error between backscatter datasets. Currently supported models are "mean" (i.e., intercept-only), "glm", and "randomForest". Model defaults are retained; use `...` to specify additional parameters.
+#' @param model Character. Method used to model error between backscatter datasets. Currently supported models are "mean" (i.e., intercept-only), "glm", "randomForest", and "earth" (multivariate adaptive regression splines). Model defaults are retained; use `...` to specify additional parameters.
 #' @param mosaic Logical. Mosaic and output the backscatter layers?
 #' @param mosaicmethod Character. Which method used to resample the corrected backscatter layer for mosaicking? See [terra::resample()] for details.
 #' @param savedata Logical. Whether to output the model data.frame. If `crossvalidate` is used, the validation data is additionally returned as `dataVal`.
@@ -64,7 +64,7 @@ mae <- function(y, y_hat){
 bulkshift <- function(shift, target, preds = NULL, model = "glm", mosaic = FALSE, mosaicmethod = "bilinear", savedata = TRUE, sample = NULL, samplemethods = "uniform", crossvalidate = NULL, ...){
   
   #check for supported models
-  if(!model %in% c('mean', 'glm', 'randomForest')) stop('model must be one of "mean", "glm", or "randomForest"')
+  if(!model %in% c('mean', 'glm', 'randomForest', 'earth')) stop('model must be one of "mean", "glm", "randomForest", or "earth')
   
   #note initial classes then convert any RasterLayers to SpatRasters
   classes <- c(class(shift)[1], class(target)[1], class(preds)[1]); classes <- classes[classes != 'NULL']
@@ -130,6 +130,7 @@ bulkshift <- function(shift, target, preds = NULL, model = "glm", mosaic = FALSE
   if(model == 'mean') err_mod <- glm(df[ ,1] ~ 1)
   if(model == 'glm') err_mod <- glm(form, data = df, ...)
   if(model == 'randomForest') err_mod <- randomForest::randomForest(form, data = df, ...)
+  if(model == 'mars') err_mod <- earth::earth(form, data = df, ...)
   
   #use the model to predict the error over the 'shift' dataset
   err_pred <- predict(ovlp_p, err_mod, type = 'response')
@@ -149,7 +150,7 @@ bulkshift <- function(shift, target, preds = NULL, model = "glm", mosaic = FALSE
       layer = "Corrected",
       VE = ve(y = df$error + df$shift, y_hat = p + df$shift),
       MAE = mae(y = df$error + df$shift, y_hat = p + df$shift),
-      r = cor(df$error + df$shift, p + df$shift)
+      r = c(cor(df$error + df$shift, p + df$shift))
     )
   )
   
