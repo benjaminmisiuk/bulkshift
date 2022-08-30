@@ -131,7 +131,7 @@ bulkshift <- function(shift, target, preds = NULL, model = "glm", mosaic = FALSE
   if(model == 'glm') err_mod <- glm(form, data = df, ...)
   if(model == 'randomForest'){
     if(!exists('nodesize')) nodesize <- nrow(df)/10
-    err_mod <- randomForest::randomForest(form, data = df, ...)
+    err_mod <- randomForest::randomForest(form, data = df, nodesize = nodesize, ...)
   } 
   if(model == 'earth') err_mod <- earth::earth(form, data = df, ...)
   
