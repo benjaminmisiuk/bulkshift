@@ -99,5 +99,11 @@ bExplore(x = b$shifted, y = bb2016)
 ```
 ![](images/bEvaluate.png)
 
+Finally, using the `bError` function we can vizualize and evaluate the fit of the error model using 2D plots if no additional predictors were supplied, or 3D plots if they were (as in this case). If `interactive = TRUE` an interactive 3D plot is generated using the [plot3Drgl](https://cran.r-project.org/web/packages/plot3Drgl/index.html) package.
+```
+bError(b)
+```
+![](images/3D_eg.png)
+
 # References
 Misiuk, B., Brown, C.J., Robert, K., Lacharite, M., 2020. Harmonizing Multi-Source Sonar Backscatter Datasets for Seabed Mapping Using Bulk Shift Approaches. Remote Sensing 12, 601. https://doi.org/10.3390/rs12040601
