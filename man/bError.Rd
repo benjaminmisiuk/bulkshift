@@ -18,7 +18,7 @@ bError(x, interactive = TRUE, cex = 0.75, pch = 16, alpha = 1)
 \item{alpha}{Alpha (transparency) of points in scatterplot.}
 }
 \description{
-Visualize the error between backscatter datasets, and optionally, additional predictors, in 2 and 3D.
+Visualize the modelled error between backscatter datasets, and optionally, additional predictors, in 2 and 3D.
 }
 \details{
 This function generates 2D or 3D scatterplots from the output of \link{bulkshift} using the \link{plot3D} and \link{plot3Drgl} packages to assist in diagnosing the quality of model fit.
@@ -26,6 +26,9 @@ This function generates 2D or 3D scatterplots from the output of \link{bulkshift
 The output shows the error between backscatter datasets as a function of the "shift" dataset on the x-axis.
 If no other predictors were used for \link{bulkshift}, this is a 2D scatterplot.
 If additional predictors were supplied, they are plotted on the z-axis and a 3D scatterplot is generated.
+
+In two dimensions, the backscatter error model is shown as a red line, which should pass through the center of the points.
+In three dimensions, the error model is shown as a plane.
 }
 \examples{
 bb2016 <- rast(system.file('extdata', 'bb2016.tif', package='bulkshift'))
