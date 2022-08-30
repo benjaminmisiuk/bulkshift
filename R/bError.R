@@ -4,6 +4,7 @@
 #' 
 #' @details 
 #' This function generates 2D or 3D scatterplots from the output of [bulkshift] using the [plot3D] and [plot3Drgl] packages to assist in diagnosing the quality of model fit. 
+#' Sensible plotting parameters are implemented by default but see those packages for additional plotting options.
 #' 
 #' The output shows the error between backscatter datasets on the y-axis as a function of the "shift" dataset on the x-axis. 
 #' If no other predictors were used for [bulkshift], this is a 2D scatterplot. 
@@ -12,11 +13,14 @@
 #' In two dimensions, the backscatter error model is shown as a red line, which should pass through the center of the points.
 #' In three dimensions, the error model is shown as a plane.
 #' 
+#' 
 #' @param x An (unmodified) list output from [bulkshift].
 #' @param interactive Logical. If additional predictors were supplited to [bulkshift], should an interactive 3D plot be returned?
 #' @param cex Size of scatterplot points.
 #' @param pch Scatterplot point symbols.
 #' @param alpha Alpha (transparency) of points in scatterplot.
+#' @param theta Azimuthal perspective on the 3D plot if `interactive = FALSE`.
+#' @param phi Colatitude perspective on the 3D plot if `interactive = FALSE`.
 #' 
 #' @examples
 #' bb2016 <- rast(system.file('extdata', 'bb2016.tif', package='bulkshift'))
@@ -35,7 +39,7 @@
 #' @import plot3Drgl
 #' @export
 #' 
-bError <- function(x, interactive = TRUE, cex = 0.75, pch = 16, alpha = 1){
+bError <- function(x, interactive = TRUE, cex = 0.75, pch = 16, alpha = 1, theta = 45, phi = 0){
   
   if(!exists('data', where = b)) stop("No dataframe found. Re-run bulkshift() with savedata = TRUE.")
   
@@ -64,7 +68,7 @@ bError <- function(x, interactive = TRUE, cex = 0.75, pch = 16, alpha = 1){
       xlab = "Backscatter (dB)",
       ylab = pred, 
       zlab = "Error (dB)", 
-      theta = 45, 
+      theta = theta, 
       phi = 0, 
       clab = "Error", 
       cex = cex, 
