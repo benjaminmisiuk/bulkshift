@@ -5,7 +5,7 @@
 #' @details 
 #' This function generates 2D or 3D scatterplots from the output of [bulkshift] using the [plot3D] and [plot3Drgl] packages to assist in diagnosing the quality of model fit. 
 #' 
-#' The output shows the error between backscatter datasets as a function of the "shift" dataset on the x-axis. 
+#' The output shows the error between backscatter datasets on the y-axis as a function of the "shift" dataset on the x-axis. 
 #' If no other predictors were used for [bulkshift], this is a 2D scatterplot. 
 #' If additional predictors were supplied, they are plotted on the z-axis and a 3D scatterplot is generated.
 #' 
