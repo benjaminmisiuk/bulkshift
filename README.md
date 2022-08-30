@@ -103,7 +103,7 @@ Finally, using the `bError` function we can vizualize and evaluate the fit of th
 ```
 bError(b)
 ```
-![](images/3D_eg.png)
+![](images/3D_eg.PNG)
 
 # References
 Misiuk, B., Brown, C.J., Robert, K., Lacharite, M., 2020. Harmonizing Multi-Source Sonar Backscatter Datasets for Seabed Mapping Using Bulk Shift Approaches. Remote Sensing 12, 601. https://doi.org/10.3390/rs12040601
