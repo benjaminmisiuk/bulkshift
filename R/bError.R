@@ -35,6 +35,9 @@
 #' b <- bulkshift(bb2017, bb2016, bbdepth)
 #' bError(b)
 #' 
+#' import plot3D
+#' import plot3Drgl
+#' 
 #' @export
 #' 
 bError <- function(x, interactive = TRUE, cex = 0.75, pch = 16, alpha = 1, theta = 45, phi = 0){
