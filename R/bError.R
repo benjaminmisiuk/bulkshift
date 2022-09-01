@@ -40,7 +40,7 @@
 #' 
 #' @export
 #' 
-bError <- function(x, interactive = TRUE, cex = 0.75, pch = 16, alpha = 1, theta = 45, phi = 0){
+bError <- function(b, interactive = TRUE, cex = 0.75, pch = 16, alpha = 1, theta = 45, phi = 0){
   
   if(!exists('data', where = b)) stop("No dataframe found. Re-run bulkshift() with savedata = TRUE.")
   
