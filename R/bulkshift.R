@@ -32,7 +32,7 @@ mae <- function(y, y_hat){
 #' @param preds SpatRaster. One or more layers to use as additional predictor variables for backscatter calibration model.
 #' @param model Character. Method used to model error between backscatter datasets. Currently supported models are "mean" (i.e., intercept-only), "glm", "randomForest", and "earth" (multivariate adaptive regression splines). Model defaults are generally retained (but see Details); use `...` to specify additional parameters.
 #' @param mosaic Logical. Mosaic and output the backscatter layers?
-#' @param mosaicmethod Character. Which method used to resample the corrected backscatter layer for mosaicking? See [terra::resample()] for details.
+#' @param mosaicmethod Character. Which method to use to resample the corrected backscatter layer for mosaicking? See [terra::resample()] for details.
 #' @param savedata Logical. Whether to output the model data.frame. If `crossvalidate` is used, the validation data is additionally returned as `dataVal`.
 #' @param sample Numeric. Proportion of overlapping data to sample for modelling using samplemethods.
 #' @param samplemethods Character vector. The method used to subsample the data. One or several of "uniform" (the default), "stratify", or "autocorrelation". Specifying multiple methods results in a combined output. See Details.
