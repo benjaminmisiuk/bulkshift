@@ -31,6 +31,7 @@ mae <- function(y, y_hat){
 #' @param target SpatRaster. Backscatter dataset used as reference.
 #' @param preds SpatRaster. One or more layers to use as additional predictor variables for backscatter calibration model.
 #' @param model Character. Method used to model error between backscatter datasets. Currently supported models are "mean" (i.e., intercept-only), "glm", "randomForest", and "earth" (multivariate adaptive regression splines). Model defaults are generally retained (but see Details); use `...` to specify additional parameters.
+#' @param model_params List of named model-specific parameters, for example, as used in a call to `glm()` or `earth()`.
 #' @param mosaic Logical. Mosaic and output the backscatter layers?
 #' @param mosaicmethod Character. Which method to use to resample the corrected backscatter layer for mosaicking? See [terra::resample()] for details.
 #' @param savedata Logical. Whether to output the model data.frame. If `crossvalidate` is used, the validation data is additionally returned as `dataVal`.
@@ -62,7 +63,7 @@ mae <- function(y, y_hat){
 #' @importFrom raster raster
 #' @export
 
-bulkshift <- function(shift, target, preds = NULL, model = "glm", mosaic = FALSE, mosaicmethod = "bilinear", savedata = TRUE, sample = NULL, samplemethods = "uniform", crossvalidate = NULL, ...){
+bulkshift <- function(shift, target, preds = NULL, model = "glm", model_params = list(), mosaic = FALSE, mosaicmethod = "bilinear", savedata = TRUE, sample = NULL, samplemethods = "uniform", crossvalidate = NULL, ...){
   
   #check for supported models
   if(!model %in% c('mean', 'glm', 'randomForest', 'earth')) stop('model must be one of "mean", "glm", "randomForest", or "earth')
@@ -129,13 +130,14 @@ bulkshift <- function(shift, target, preds = NULL, model = "glm", mosaic = FALSE
   )
   
   if(model == 'mean') err_mod <- glm(df[ ,1] ~ 1)
-  if(model == 'glm') err_mod <- glm(form, data = df, ...)
+  if(model == 'glm') err_mod <- do.call('glm', c(list(form, data = quote(df)), model_params))
   if(model == 'randomForest'){
-    if(!exists('nodesize')) nodesize <- nrow(df)/10
-    err_mod <- randomForest::randomForest(form, data = df, nodesize = nodesize, ...)
+    #set a default nodesize for RF if not specified
+    if(!'nodesize' %in% names(model_params)) model_params$nodesize <- ceiling(nrow(df)/10)
+    err_mod <- do.call(randomForest::randomForest, c(list(form, data = quote(df)), model_params))
   } 
-  if(model == 'earth') err_mod <- earth::earth(form, data = df, ...)
-  
+  if(model == 'earth') err_mod <- do.call(earth::earth, c(list(form, data = quote(df)), model_params))
+
   #use the model to predict the error over the 'shift' dataset
   err_pred <- predict(ovlp_p, err_mod, type = 'response')
   shifted <- shift + err_pred; names(shifted) <- paste0(names(shift), '_shifted')
