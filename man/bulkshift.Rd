@@ -9,6 +9,7 @@ bulkshift(
   target,
   preds = NULL,
   model = "glm",
+  model_params = list(),
   mosaic = FALSE,
   mosaicmethod = "bilinear",
   savedata = TRUE,
@@ -25,11 +26,13 @@ bulkshift(
 
 \item{preds}{SpatRaster. One or more layers to use as additional predictor variables for backscatter calibration model.}
 
-\item{model}{Character. Method used to model error between backscatter datasets. Currently supported models are "mean" (i.e., intercept-only), "glm", "randomForest", and "earth" (multivariate adaptive regression splines). Model defaults are retained; use \code{...} to specify additional parameters.}
+\item{model}{Character. Method used to model error between backscatter datasets. Currently supported models are "mean" (i.e., intercept-only), "glm", "randomForest", and "earth" (multivariate adaptive regression splines). Model defaults are generally retained (but see Details); use \code{...} to specify additional parameters.}
+
+\item{model_params}{List of named model-specific parameters, for example, as used in a call to \code{glm()} or \code{earth()}.}
 
 \item{mosaic}{Logical. Mosaic and output the backscatter layers?}
 
-\item{mosaicmethod}{Character. Which method used to resample the corrected backscatter layer for mosaicking? See \code{\link[terra:resample]{terra::resample()}} for details.}
+\item{mosaicmethod}{Character. Which method to use to resample the corrected backscatter layer for mosaicking? See \code{\link[terra:resample]{terra::resample()}} for details.}
 
 \item{savedata}{Logical. Whether to output the model data.frame. If \code{crossvalidate} is used, the validation data is additionally returned as \code{dataVal}.}
 
@@ -52,6 +55,7 @@ By default, this function fits a linear regression to the error between two back
 datasets using \link{glm}. The modelling method can be changed using the \code{model} argument, but extrapolation
 is important, and regression has performed well in simulations. Additional predictors such as bathymetry
 can be added as a single SpatRaster (potentially with multiple layers) using \code{preds}.
+If \verb{method = 'randomForest} the default \code{nodesize} is \code{n/10} of the overlapping raster cells to prevent overfitting on highly redundant data with a low number of predictors.
 
 \code{sample} calls on \link{bSample} to draw a random sample of the data for modelling. This has two purposes:
 \enumerate{

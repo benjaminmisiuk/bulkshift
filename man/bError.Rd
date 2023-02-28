@@ -4,11 +4,17 @@
 \alias{bError}
 \title{Backscatter error visualization}
 \usage{
-bError(x, interactive = TRUE, cex = 0.75, pch = 16, alpha = 1)
+bError(
+  b,
+  interactive = TRUE,
+  cex = 0.75,
+  pch = 16,
+  alpha = 1,
+  theta = 45,
+  phi = 0
+)
 }
 \arguments{
-\item{x}{An (unmodified) list output from \link{bulkshift}.}
-
 \item{interactive}{Logical. If additional predictors were supplited to \link{bulkshift}, should an interactive 3D plot be returned?}
 
 \item{cex}{Size of scatterplot points.}
@@ -16,14 +22,21 @@ bError(x, interactive = TRUE, cex = 0.75, pch = 16, alpha = 1)
 \item{pch}{Scatterplot point symbols.}
 
 \item{alpha}{Alpha (transparency) of points in scatterplot.}
+
+\item{theta}{Azimuthal perspective on the 3D plot if \code{interactive = FALSE}.}
+
+\item{phi}{Colatitude perspective on the 3D plot if \code{interactive = FALSE}.}
+
+\item{x}{An (unmodified) list output from \link{bulkshift}.}
 }
 \description{
 Visualize the modelled error between backscatter datasets, and optionally, additional predictors, in 2 and 3D.
 }
 \details{
 This function generates 2D or 3D scatterplots from the output of \link{bulkshift} using the \link{plot3D} and \link{plot3Drgl} packages to assist in diagnosing the quality of model fit.
+Sensible plotting parameters are implemented by default but see those packages for additional plotting options.
 
-The output shows the error between backscatter datasets as a function of the "shift" dataset on the x-axis.
+The output shows the error between backscatter datasets on the y-axis as a function of the "shift" dataset on the x-axis.
 If no other predictors were used for \link{bulkshift}, this is a 2D scatterplot.
 If additional predictors were supplied, they are plotted on the z-axis and a 3D scatterplot is generated.
 
