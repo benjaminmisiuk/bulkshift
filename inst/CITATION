@@ -5,12 +5,6 @@ citEntry(
   title    = "bulkshift: Backscatter raster harmonization for seabed mapping in R",
   author   = "Benjamin Misiuk",
   year     = "2022",
-  volume   = ,
-  number   = ,
-  pages    = ,
   url      = "https://github.com/benjaminmisiuk/bulkshift",
-  doi      = "10.5281/zenodo.6408232",
-  textVersion = paste(
-
-  )
+  doi      = "10.5281/zenodo.6408232"
 )
