@@ -1,0 +1,16 @@
+citHeader("To cite bulkshift in publications use:")
+
+citEntry(
+  entry    = "Manual",
+  title    = "bulkshift: Backscatter raster harmonization for seabed mapping in R",
+  author   = "Benjamin Misiuk",
+  year     = "2022",
+  volume   = ,
+  number   = ,
+  pages    = ,
+  url      = "https://github.com/benjaminmisiuk/bulkshift",
+  doi      = "10.5281/zenodo.6408232",
+  textVersion = paste(
+
+  )
+)
