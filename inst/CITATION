@@ -1,11 +1,11 @@
 citHeader("To cite bulkshift in publications use:")
 
 citEntry(
-  entry    = "Manual",
+  entry    = "Misc",
   title    = "bulkshift: Backscatter raster harmonization for seabed mapping in R",
-  author   = "Benjamin Misiuk",
+  author   =  person("Benjamin", "Misiuk", email = "benjaminmisiuk@gmail.com"),
   year     = "2022",
   url      = "https://github.com/benjaminmisiuk/bulkshift",
   doi      = "10.5281/zenodo.6408232",
-  textVersion = NULL
+  textVersion = "Misiuk, B. 2022. bulkshift: Backscatter raster harmonization for seabed mapping in R. doi:10.5281/zenodo.6408232. https://github.com/benjaminmisiuk/bulkshift."
 )
