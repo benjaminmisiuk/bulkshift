@@ -30,7 +30,7 @@ mae <- function(y, y_hat){
 #' @param shift SpatRaster. Backscatter dataset undergoing correction.
 #' @param target SpatRaster. Backscatter dataset used as reference.
 #' @param preds SpatRaster. One or more layers to use as additional predictor variables for backscatter calibration model.
-#' @param model Character. Method used to model error between backscatter datasets. Currently supported models are "mean" (i.e., intercept-only), "glm", "randomForest", and "earth" (multivariate adaptive regression splines). Model defaults are generally retained (but see Details); use `...` to specify additional parameters.
+#' @param model Character. Method used to model error between backscatter datasets. Currently supported models are "mean" (i.e., intercept-only), "glm", "randomForest", "gls" for handling correlated errors, and "earth" (multivariate adaptive regression splines). Model defaults are generally retained (but see Details); use `...` to specify additional parameters.
 #' @param model_params List of named model-specific parameters, for example, as used in a call to `glm()` or `earth()`.
 #' @param mosaic Logical. Mosaic and output the backscatter layers?
 #' @param mosaicmethod Character. Which method to use to resample the corrected backscatter layer for mosaicking? See [terra::resample()] for details.
@@ -66,7 +66,7 @@ mae <- function(y, y_hat){
 bulkshift <- function(shift, target, preds = NULL, model = "glm", model_params = list(), mosaic = FALSE, mosaicmethod = "bilinear", savedata = TRUE, sample = NULL, samplemethods = "uniform", crossvalidate = NULL, ...){
   
   #check for supported models
-  if(!model %in% c('mean', 'glm', 'randomForest', 'earth')) stop('model must be one of "mean", "glm", "randomForest", or "earth')
+  if(!model %in% c('mean', 'glm', 'randomForest', 'gls', 'earth')) stop('model must be one of "mean", "glm", "randomForest", or "earth')
   
   #note initial classes then convert any RasterLayers to SpatRasters
   classes <- c(class(shift)[1], class(target)[1], class(preds)[1]); classes <- classes[classes != 'NULL']

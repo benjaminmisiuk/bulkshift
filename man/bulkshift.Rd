@@ -26,7 +26,7 @@ bulkshift(
 
 \item{preds}{SpatRaster. One or more layers to use as additional predictor variables for backscatter calibration model.}
 
-\item{model}{Character. Method used to model error between backscatter datasets. Currently supported models are "mean" (i.e., intercept-only), "glm", "randomForest", and "earth" (multivariate adaptive regression splines). Model defaults are generally retained (but see Details); use \code{...} to specify additional parameters.}
+\item{model}{Character. Method used to model error between backscatter datasets. Currently supported models are "mean" (i.e., intercept-only), "glm", "randomForest", "gls" for handling correlated errors, and "earth" (multivariate adaptive regression splines). Model defaults are generally retained (but see Details); use \code{...} to specify additional parameters.}
 
 \item{model_params}{List of named model-specific parameters, for example, as used in a call to \code{glm()} or \code{earth()}.}
 
