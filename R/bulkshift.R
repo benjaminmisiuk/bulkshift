@@ -107,8 +107,12 @@ bulkshift <- function(shift, target, preds = NULL, model = "glm", model_params =
     df <- as.data.frame(ovlp, xy = TRUE, na.rm = FALSE)
     df[df == "NaN"] <- NA
     df <- df[s, ]
+    xy <- df[ ,c('x', 'y')]
+    df <- subset(df, select = -c(x, y))
   } else {
     df <- as.data.frame(ovlp, xy = TRUE)
+    xy <- df[ ,c('x', 'y')]
+    df <- subset(df, select = -c(x, y))
   }
   
   df <- df[complete.cases(df), ]
