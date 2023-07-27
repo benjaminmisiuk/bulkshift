@@ -104,9 +104,11 @@ bulkshift <- function(shift, target, preds = NULL, model = "glm", model_params =
   if(!is.null(sample)){
     sample <- floor(length(cells(ovlp$error)) * sample)
     s <- bSample(ovlp$shift, size = sample, samplemethods = samplemethods)
-    df <- ovlp[s]
+    df <- as.data.frame(ovlp, xy = TRUE, na.rm = FALSE)
+    df[df == "NaN"] <- NA
+    df <- df[s, ]
   } else {
-    df <- as.data.frame(ovlp)
+    df <- as.data.frame(ovlp, xy = TRUE)
   }
   
   df <- df[complete.cases(df), ]
@@ -125,7 +127,7 @@ bulkshift <- function(shift, target, preds = NULL, model = "glm", model_params =
     paste0(
       'error', 
       '~',
-      paste0(names(df)[-1], collapse="+")
+      paste0(names(ovlp_p), collapse="+")
     )
   )
   
