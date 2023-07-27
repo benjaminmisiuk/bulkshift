@@ -107,12 +107,8 @@ bulkshift <- function(shift, target, preds = NULL, model = "glm", model_params =
     df <- as.data.frame(ovlp, xy = TRUE, na.rm = FALSE)
     df[df == "NaN"] <- NA
     df <- df[s, ]
-    xy <- df[ ,c('x', 'y')]
-    df <- subset(df, select = -c(x, y))
   } else {
     df <- as.data.frame(ovlp, xy = TRUE)
-    xy <- df[ ,c('x', 'y')]
-    df <- subset(df, select = -c(x, y))
   }
   
   df <- df[complete.cases(df), ]
@@ -125,6 +121,9 @@ bulkshift <- function(shift, target, preds = NULL, model = "glm", model_params =
     df_out <- df[cv_i, ]
     df <- df[!cv_i, ]
   }
+  
+  xy <- df[ ,c('x', 'y')]
+  df <- subset(df, select = -c(x, y))
   
   #model the error
   form <- as.formula(
@@ -149,7 +148,7 @@ bulkshift <- function(shift, target, preds = NULL, model = "glm", model_params =
   }
 
   #use the model to predict the error over the 'shift' dataset
-  err_pred <- predict(ovlp_p, err_mod, type = 'response')
+  err_pred <- terra::predict(ovlp_p, err_mod, type = 'response', na.rm = TRUE)
   shifted <- shift + err_pred; names(shifted) <- paste0(names(shift), '_shifted')
   
   #calculate fitted model statistics before and after correction
