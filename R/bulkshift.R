@@ -143,7 +143,10 @@ bulkshift <- function(shift, target, preds = NULL, model = "glm", model_params =
     err_mod <- do.call(randomForest::randomForest, c(list(form, data = quote(df)), model_params))
   } 
   if(model == 'earth') err_mod <- do.call(earth::earth, c(list(form, data = quote(df)), model_params))
-  if(model == 'gls') err_mod <- do.call(nlme::gls, c(list(form, data = quote(df)), model_params))
+  if(model == 'gls'){
+    df_gls <- cbind(df, xy)
+    err_mod <- do.call(nlme::gls, c(list(form, data = quote(df_gls)), model_params))
+  }
 
   #use the model to predict the error over the 'shift' dataset
   err_pred <- predict(ovlp_p, err_mod, type = 'response')
